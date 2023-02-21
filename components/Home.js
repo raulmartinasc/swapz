@@ -1,4 +1,9 @@
-const Home = () => {};
+import { StyleSheet, Text, View } from "react-native";
+const Home = () => {
+  <View>
+    <Text>Hello</Text>
+  </View>;
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
