@@ -1,20 +1,33 @@
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  ScrollView,
+} from "react-native";
 import { useState } from "react";
 
 const Registration = () => {
   const [reg, setReg] = useState({});
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Register</Text>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Firstname"
-        onChangeText={reg.firstname}
-      />
-      <TextInput style={styles.textInput} placeholder="Lastname" />
-      <TextInput style={styles.textInput} placeholder="Email" />
-      <TextInput style={styles.textInput} placeholder="Password" />
-      <Button style={styles.button} title="Register" />
+      <ScrollView>
+        <Text style={styles.text}>Register</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Firstname"
+          onChangeText={reg.firstname}
+        />
+        <TextInput style={styles.textInput} placeholder="Lastname" />
+        <TextInput style={styles.textInput} placeholder="Email" />
+        <TextInput
+          style={styles.textInput}
+          secureTextEntry={true}
+          placeholder="Password"
+        />
+        <Button style={styles.button} title="Register" />
+      </ScrollView>
     </View>
   );
 };
@@ -26,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
+    textAlign: "center",
     fontSize: 30,
     padding: 10,
   },
