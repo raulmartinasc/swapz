@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { auth } from "../firebaseConfig";
+
 const Home = () => {
   <View>
     <Text>Email: {auth.currentUser?.email}</Text>
