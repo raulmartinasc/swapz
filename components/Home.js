@@ -9,9 +9,6 @@ const Home = ({ navigation }) => {
       navigation.replace("Login");
     });
   };
-  const navigateToHome = () => {
-    navigation.replace("AddItem");
-  };
 
   return (
     <View>
@@ -19,9 +16,6 @@ const Home = ({ navigation }) => {
       <Text>Hello</Text>
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={navigateToHome} style={styles.button}>
-        <Text style={styles.buttonText}>Add Item</Text>
       </TouchableOpacity>
     </View>
   );
