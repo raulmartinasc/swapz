@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { auth } from "../firebaseConfig";
+import {signOut} from "firebase/auth"
+import { NavigationContainer } from "@react-navigation/native";
 
 
 const Home = () => {
 
-import {signOut} from "firebase/auth"
-import { NavigationContainer } from "@react-navigation/native";
 
 const Home = ({navigation}) => {
 
@@ -27,7 +27,7 @@ return (
     </TouchableOpacity>
   </View>
 )
-};
+}};
 
 
 
