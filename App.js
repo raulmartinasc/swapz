@@ -7,7 +7,9 @@ import Login from "./components/Login";
 import Registration from "./components/Registration";
 import Home from "./components/Home";
 import Nav from "./components/Nav";
+
 import TabNavigator from "./components/TabNavigator";
+import AddItem from "./components/AddItem";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -17,6 +19,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Registration" component={Registration} />
         <Stack.Screen name="Main" component={TabNavigator} />
+        <Stack.Screen name="AddItem" component={AddItem} />
       </Stack.Navigator>
     </NavigationContainer>
   );
