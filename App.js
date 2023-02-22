@@ -7,16 +7,16 @@ import Login from "./components/Login";
 import Registration from "./components/Registration";
 import Home from "./components/Home";
 import Nav from "./components/Nav";
+import TabNavigator from "./components/TabNavigator";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Nav" component={Nav} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Registration" component={Registration} />
+        <Stack.Screen name="Main" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
