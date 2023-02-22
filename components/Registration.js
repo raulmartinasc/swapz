@@ -5,6 +5,7 @@ import {
   TextInput,
   Button,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { useState } from "react";
 import { auth, db } from "../firebaseConfig";
@@ -20,6 +21,14 @@ const Registration = ({navigation}) => {
     const [firstName, setFirstname] = useState('')
     const [lastName, setLastname] = useState('')
     const username = 'test'
+
+
+    const returnToLogin= () => {
+          navigation.replace('Login')
+    }
+
+
+
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password).then((userCredential)=>{
@@ -81,11 +90,19 @@ const Registration = ({navigation}) => {
         value={password}
         onChangeText={password=>setPassword(password)}
         />
-        <Button style={styles.button} title="Register" onPress={handleSignUp}/>
+        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={returnToLogin} style={styles.button}>
+        <Text style={styles.buttonText}>Already signed up?</Text>
+    </TouchableOpacity>
       </ScrollView>
     </View>
   );
 };
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -106,7 +123,30 @@ const styles = StyleSheet.create({
     height: 40,
     width: 170,
   },
-  button: {},
+  button:{
+    backgroundColor: '#0782F9',
+    width: '100%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 5
+},
+buttonOutline:{
+    backgroundColor: 'white',
+    marginTop: 5,
+    borderColor: '#0782F9',
+    borderWidth: 2
+},
+buttonText:{
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+},
+buttonOutlineText:{
+    color: '#0782F9',
+    fontWeight: '500',
+    fontSize: 16,
+},
 });
 
 export default Registration;
