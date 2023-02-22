@@ -23,6 +23,7 @@ const AddItem = () => {
   const submitItem = () => {
     //future idea, split the tags by commas and post an array, would need to find a way to index through and query maybe we can use .includes()
     const itemData = {
+      username: "username",
       itemName: itemName,
       itemLocation: itemLocation,
       itemDesc: itemDesc,
