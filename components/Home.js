@@ -4,7 +4,6 @@ import {signOut} from "firebase/auth"
 import { NavigationContainer } from "@react-navigation/native";
 
 
-const Home = () => {
 
 
 const Home = ({navigation}) => {
@@ -27,7 +26,7 @@ return (
     </TouchableOpacity>
   </View>
 )
-}};
+};
 
 
 
