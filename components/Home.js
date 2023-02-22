@@ -1,5 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { auth } from "../firebaseConfig";
+
+
+const Home = () => {
+
 import {signOut} from "firebase/auth"
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -14,6 +18,7 @@ const Home = ({navigation}) => {
   }
 
 return (
+
   <View>
     <Text>Email: {auth.currentUser?.email}</Text>
     <Text>Hello</Text>
