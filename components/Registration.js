@@ -7,8 +7,50 @@ import {
   ScrollView,
 } from "react-native";
 import { useState } from "react";
+import { auth, db } from "../firebaseConfig";
+import { setDoc, getDoc, doc  } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
 
-const Registration = () => {
+
+
+const Registration = ({navigation}) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [firstName, setFirstname] = useState('')
+    const [lastName, setLastname] = useState('')
+    const username = 'test'
+
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password).then((userCredential)=>{
+        const user = userCredential
+        console.log(`registered with with ${user._tokenResponse.email}`)
+        setDoc(doc(db, 'users', username), {
+          firstName: firstName,
+          lastName: lastName,
+          email: auth.currentUser?.email
+      }).then(()=>{
+          const docRef = doc(db, 'users', username)
+          return docRef
+      }).then((docRef)=>{
+          const userInfo = getDoc(docRef)
+          return userInfo
+      }).then((userInfo)=>{
+          //this is where it would be added to global context
+          console.log(userInfo.data())
+          navigation.replace('Home')
+      })
+      .catch((err)=>{
+          console.log(err)
+      })
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+
+
+
   const [reg, setReg] = useState({});
   return (
     <View style={styles.container}>
@@ -17,16 +59,29 @@ const Registration = () => {
         <TextInput
           style={styles.textInput}
           placeholder="Firstname"
-          onChangeText={reg.firstname}
+          value={firstName}
+          onChangeText={firstName => setFirstname(firstName)}
         />
-        <TextInput style={styles.textInput} placeholder="Lastname" />
-        <TextInput style={styles.textInput} placeholder="Email" />
         <TextInput
-          style={styles.textInput}
-          secureTextEntry={true}
-          placeholder="Password"
+        style={styles.textInput}
+        placeholder="Lastname" 
+        value={lastName}
+        onChangeText={lastName=>setLastname(lastName)}
         />
-        <Button style={styles.button} title="Register" />
+        <TextInput
+        style={styles.textInput} 
+        placeholder="Email" 
+        value={email} 
+        onChangeText={email => setEmail(email)} 
+        />
+        <TextInput
+        style={styles.textInput}
+        secureTextEntry={true}
+        placeholder="Password"
+        value={password}
+        onChangeText={password=>setPassword(password)}
+        />
+        <Button style={styles.button} title="Register" onPress={handleSignUp}/>
       </ScrollView>
     </View>
   );
