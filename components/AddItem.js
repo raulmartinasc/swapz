@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-// import * as ImagePicker from "expo-image-picker";
 import { db } from "../firebaseConfig";
 import ImageSelector from "./ImageSelector";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -23,27 +22,10 @@ const AddItem = () => {
   const [itemDesc, setItemDesc] = useState("");
   const [itemTags, setItemTags] = useState("");
   const [image, setImage] = useState(null);
-  // const [imageName, setImageName] = useState("");
   const [imageURL, setImageURL] = useState(
     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png"
   );
-
-  // const uploadImage = async (uri) => {
-  //   console.log(image);
-  //   // console.log(uri, "uri");
-  //   const storage = getStorage();
-  //   const filename = uri.split("/").pop();
-  //   const imageRef = storageRef(storage, `images/${filename}`);
-  //   const response = await fetch(uri);
-  //   const blob = await response.blob();
-  //   return uploadBytes(imageRef, blob).catch((error) => {
-  //     console.log("Error uploading image: ", error);
-  //     return null;
-  //   });
-  // };
   const uploadImage = async () => {
-    // console.log(image);
-    // console.log(uri, "uri");
     const storage = getStorage();
     const filename = image.split("/").pop();
     const imageRef = ref(storage, `items/${filename}`);
@@ -51,7 +33,6 @@ const AddItem = () => {
     getDownloadURL(ref(storage, imagePath)).then((url) => {
       setImageURL(url);
     });
-    // setImageName(imageRef.name);
     const response = await fetch(image);
     const blob = await response.blob();
     return uploadBytes(imageRef, blob).catch((error) => {
@@ -118,7 +99,6 @@ const AddItem = () => {
       <TouchableOpacity onPress={submitItem} style={styles.button}>
         <Text style={styles.buttonText}>Submit Item</Text>
       </TouchableOpacity>
-      <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
     </ScrollView>
   );
 };

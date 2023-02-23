@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Button, Image, View, Platform } from "react-native";
+import React from "react";
+import { Button, Image, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 
 export default function ImageSelector({ image, setImage }) {
-  // console.log(selectedImages);
   const handleSelectImages = () => {
     ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -13,33 +11,17 @@ export default function ImageSelector({ image, setImage }) {
       quality: 1,
     })
       .then((response) => {
-        // console.log(response);
         if (!response.canceled) {
           return response.assets[0].uri;
         }
       })
       .then((imageUri) => {
-        // console.log(imageUri);
         setImage(imageUri);
-        // uploadImage(imageUri);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // const uploadImage = async (uri) => {
-  //   // console.log(uri, "uri");
-  //   const storage = getStorage();
-  //   const filename = uri.split("/").pop();
-  //   const imageRef = storageRef(storage, `images/${filename}`);
-  //   const response = await fetch(uri);
-  //   const blob = await response.blob();
-  //   return uploadBytes(imageRef, blob).catch((error) => {
-  //     console.log("Error uploading image: ", error);
-  //     return null;
-  //   });
-  // };
-
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Button
