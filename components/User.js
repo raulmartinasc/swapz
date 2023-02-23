@@ -1,36 +1,22 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { auth } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
 
-const Home = ({ navigation }) => {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    getDocs(collection(db, "items")).then((result) => {
-      setItems(
-        result.docs.map((item) => {
-          return item.data();
-        })
-      );
+const User = ({ navigation }) => {
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      navigation.replace("Login");
     });
-  }, []);
-  let key = 0;
+  };
+
   return (
     <View>
-      {items.map((item) => {
-        key++;
-        return (
-          <View key={key}>
-            <Text>{item.itemName}</Text>
-            <Image
-              source={{ uri: item.itemImg }}
-              style={{ width: 200, height: 200 }}
-            />
-          </View>
-        );
-      })}
+      <Text>Email: {auth.currentUser?.email}</Text>
       <Text>Hello</Text>
+      <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+        <Text style={styles.buttonText}>Sign Out</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -82,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default User;

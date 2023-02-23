@@ -1,8 +1,8 @@
 import Home from "./Home";
+import User from "./User";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddItem from "./AddItem";
 import { AntDesign } from "@expo/vector-icons";
-const User = () => {};
 const Offers = () => {};
 const Tab = createBottomTabNavigator();
 

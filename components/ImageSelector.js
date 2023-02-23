@@ -15,8 +15,8 @@ export default function ImageSelector({ image, setImage }) {
         }
       })
       .then((imageUri) => {
-        console.log(imageUri, "imageUri");
         setImage(imageUri);
+        console.log(image, "image in imageselector.js");
       })
       .catch((err) => {
         console.log(err);
