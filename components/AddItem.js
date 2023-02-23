@@ -28,17 +28,16 @@ const AddItem = () => {
     const storage = getStorage();
     const filename = image.split("/").pop();
     const imageRef = ref(storage, `items/${filename}`);
-    const imagePath = imageRef._location.path_;
-    getDownloadURL(ref(storage, imagePath)).then((url) => {
-      console.log(url, "image url in upload image func");
-      setImageURL(url);
-    });
+
+    // Upload the image to Firebase Storage
     const response = await fetch(image);
     const blob = await response.blob();
-    return uploadBytes(imageRef, blob).catch((error) => {
-      console.log("Error uploading image: ", error);
-      return null;
-    });
+    await uploadBytes(imageRef, blob);
+
+    // Get the download URL of the uploaded image
+    const url = await getDownloadURL(imageRef);
+    console.log(url, "image url in upload image func");
+    setImageURL(url);
   };
 
   const submitItem = () => {
