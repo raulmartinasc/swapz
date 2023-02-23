@@ -5,14 +5,15 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
 import { db } from "../firebaseConfig";
 import ImageSelector from "./ImageSelector";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const AddItem = () => {
   const time = Timestamp.now();
@@ -22,6 +23,42 @@ const AddItem = () => {
   const [itemDesc, setItemDesc] = useState("");
   const [itemTags, setItemTags] = useState("");
   const [image, setImage] = useState(null);
+  // const [imageName, setImageName] = useState("");
+  const [imageURL, setImageURL] = useState(
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png"
+  );
+
+  // const uploadImage = async (uri) => {
+  //   console.log(image);
+  //   // console.log(uri, "uri");
+  //   const storage = getStorage();
+  //   const filename = uri.split("/").pop();
+  //   const imageRef = storageRef(storage, `images/${filename}`);
+  //   const response = await fetch(uri);
+  //   const blob = await response.blob();
+  //   return uploadBytes(imageRef, blob).catch((error) => {
+  //     console.log("Error uploading image: ", error);
+  //     return null;
+  //   });
+  // };
+  const uploadImage = async () => {
+    // console.log(image);
+    // console.log(uri, "uri");
+    const storage = getStorage();
+    const filename = image.split("/").pop();
+    const imageRef = ref(storage, `items/${filename}`);
+    const imagePath = imageRef._location.path_;
+    getDownloadURL(ref(storage, imagePath)).then((url) => {
+      setImageURL(url);
+    });
+    // setImageName(imageRef.name);
+    const response = await fetch(image);
+    const blob = await response.blob();
+    return uploadBytes(imageRef, blob).catch((error) => {
+      console.log("Error uploading image: ", error);
+      return null;
+    });
+  };
 
   const submitItem = () => {
     //future idea, split the tags by commas and post an array, would need to find a way to index through and query maybe we can use .includes()
@@ -31,7 +68,7 @@ const AddItem = () => {
       itemLocation: itemLocation,
       itemDesc: itemDesc,
       itemTags: itemTags,
-      itemImg: image,
+      itemImg: imageURL,
       time: currTime,
     };
     addDoc(collection(db, "items"), itemData)
@@ -44,21 +81,7 @@ const AddItem = () => {
 
     //navigate to single item page once uploaded
   };
-  useEffect(() => {
-    const uploadImage = async (uri) => {
-      const storage = getStorage();
-      const filename = uri.split("/").pop();
-      const imageRef = storageRef(storage, `images/${filename}`);
-      const response = await fetch(uri);
-      console.log(uri);
-      const blob = await response.blob();
-      return uploadBytes(imageRef, blob).catch((error) => {
-        console.log("Error uploading image: ", error);
-        return null;
-      });
-    };
-  }, [image]);
-
+  console.log(imageURL);
   return (
     <ScrollView>
       <TextInput
@@ -79,12 +102,6 @@ const AddItem = () => {
         value={itemDesc}
         onChangeText={(itemDesc) => setItemDesc(itemDesc)}
       />
-      {/* <TextInput
-        style={styles.textInput}
-        placeholder="image url"
-        value={itemImg}
-        onChangeText={(itemImg) => setItemImg(itemImg)}
-      /> */}
       <TextInput
         style={styles.textInput}
         placeholder="Tags/Category"
@@ -101,6 +118,7 @@ const AddItem = () => {
       <TouchableOpacity onPress={submitItem} style={styles.button}>
         <Text style={styles.buttonText}>Submit Item</Text>
       </TouchableOpacity>
+      <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
     </ScrollView>
   );
 };
