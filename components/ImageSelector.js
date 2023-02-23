@@ -7,8 +7,7 @@ export default function ImageSelector({ image, setImage }) {
     ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+      quality: 0,
     })
       .then((response) => {
         if (!response.canceled) {
@@ -16,6 +15,7 @@ export default function ImageSelector({ image, setImage }) {
         }
       })
       .then((imageUri) => {
+        console.log(imageUri, "imageUri");
         setImage(imageUri);
       })
       .catch((err) => {

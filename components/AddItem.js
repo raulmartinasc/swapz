@@ -2,12 +2,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebaseConfig";
@@ -31,6 +30,7 @@ const AddItem = () => {
     const imageRef = ref(storage, `items/${filename}`);
     const imagePath = imageRef._location.path_;
     getDownloadURL(ref(storage, imagePath)).then((url) => {
+      console.log(url, "image url in upload image func");
       setImageURL(url);
     });
     const response = await fetch(image);
@@ -62,7 +62,6 @@ const AddItem = () => {
 
     //navigate to single item page once uploaded
   };
-  console.log(imageURL);
   return (
     <ScrollView>
       <TextInput
@@ -99,6 +98,7 @@ const AddItem = () => {
       <TouchableOpacity onPress={submitItem} style={styles.button}>
         <Text style={styles.buttonText}>Submit Item</Text>
       </TouchableOpacity>
+      <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
     </ScrollView>
   );
 };
