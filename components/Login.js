@@ -9,6 +9,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
+import { Image } from "react-native";
+const logo = require("../swap.png");
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -36,7 +38,8 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles}>
+    <View style={styles.container}>
+      <Image source={logo} style={styles.logo} />
       <Text style={styles}>You are in Login</Text>
       <TextInput
         style={styles.textInput}
@@ -104,6 +107,10 @@ const styles = StyleSheet.create({
     color: "#0782F9",
     fontWeight: "500",
     fontSize: 16,
+  },
+  logo: {
+    height: 100,
+    width: 350,
   },
 });
 
