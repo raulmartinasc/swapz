@@ -32,7 +32,6 @@ const Login = ({ navigation }) => {
       if (user) {
         const docRef = doc(db, "users", user.email);
         getDoc(docRef).then((res) => {
-          console.log(res.data(), "<<inside onAuthState");
           setUserInfo(res.data());
         });
         navigation.replace("Main");
