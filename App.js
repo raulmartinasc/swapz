@@ -1,10 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import {StatusBar} from "expo-status-bar";
+import {StyleSheet, Text, View} from "react-native";
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
+import SingleItem from "./components/SingleItem";
 
 import TabNavigator from "./components/TabNavigator";
 import AddItem from "./components/AddItem";
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Registration" component={Registration} />
         <Stack.Screen name="Main" component={TabNavigator} />
+        <Stack.Screen name="SingleItem" component={SingleItem} />
       </Stack.Navigator>
     </NavigationContainer>
   );
