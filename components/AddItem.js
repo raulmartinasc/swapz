@@ -62,8 +62,6 @@ const AddItem = ({ navigation }) => {
       .catch((err) => {
         console.log(err);
       });
-
-    //navigate to single item page once uploaded
   };
   return (
     <ScrollView>
