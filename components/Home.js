@@ -45,12 +45,10 @@ const Home = ({ navigation }) => {
                 source={{ uri: item.itemImg }}
                 style={{ width: 200, height: 200 }}
               />
-              {console.log(item.itemImg)}
             </TouchableOpacity>
           </View>
         );
       })}
-      <Text>Hello</Text>
     </View>
   );
 };

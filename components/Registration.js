@@ -38,6 +38,8 @@ const Registration = ({ navigation }) => {
           firstName: firstName,
           lastName: lastName,
           email: auth.currentUser?.email,
+          avatarImg:
+            "https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png",
         })
           .then(() => {
             const docRef = doc(db, "users", auth.currentUser?.email);
