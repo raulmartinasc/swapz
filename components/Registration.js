@@ -48,9 +48,7 @@ const Registration = ({ navigation }) => {
             return userInfo;
           })
           .then((userInfoData) => {
-            //this is where it would be added to global context
             setUserInfo(userInfoData.data());
-            console.log(userInfo);
           })
           .then(() => {
             navigation.replace("Home");

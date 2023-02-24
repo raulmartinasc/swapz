@@ -27,18 +27,18 @@ const Login = ({ navigation }) => {
   const handleRegister = () => {
     navigation.replace("Registration");
   };
-
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const docRef = doc(db, "users", user.email);
         getDoc(docRef).then((res) => {
+          console.log(res.data(), "<<inside onAuthState");
           setUserInfo(res.data());
         });
         navigation.replace("Main");
       }
     });
-  }, [loggedIn]);
+  }, []);
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
