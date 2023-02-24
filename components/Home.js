@@ -1,9 +1,9 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from "react-native";
-import {doc, getDoc, collection, getDocs} from "firebase/firestore";
-import {db} from "../firebaseConfig";
-import {useEffect, useState} from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { useEffect, useState } from "react";
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -18,15 +18,14 @@ const Home = ({navigation}) => {
   let key = 0;
 
   const navigateToItem = (item) => {
-    // console.log(item);
-    navigation.navigate("SingleItem", {item});
+    navigation.navigate("SingleItem", { item });
   };
 
   return (
     <View>
       {items.map((item) => {
         key++;
-        // console.log(item, "CONSOLE LOG HERE");
+
         return (
           <View key={key}>
             <Text>{item.itemName}</Text>
@@ -36,8 +35,8 @@ const Home = ({navigation}) => {
               }}
             >
               <Image
-                source={{uri: item.itemImg}}
-                style={{width: 200, height: 200}}
+                source={{ uri: item.itemImg }}
+                style={{ width: 200, height: 200 }}
               />
               {console.log(item.itemImg)}
             </TouchableOpacity>
