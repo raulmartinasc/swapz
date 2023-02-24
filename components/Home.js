@@ -7,6 +7,7 @@ import { UserContext } from "../Context/UserContext";
 const Home = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
+  const [displayUsername, setDisplayUsername] = useState("not loaded");
   useEffect(() => {
     getDocs(collection(db, "items")).then((result) => {
       setItems(
@@ -16,6 +17,10 @@ const Home = ({ navigation }) => {
       );
     });
   }, []);
+
+  useEffect(() => {
+    setDisplayUsername(userInfo.username);
+  }, [items]);
   let key = 0;
 
   const navigateToItem = (item) => {
@@ -24,7 +29,7 @@ const Home = ({ navigation }) => {
 
   return (
     <View>
-      <Text>{userInfo.username}</Text>
+      <Text>{displayUsername}</Text>
       {items.map((item) => {
         key++;
 
