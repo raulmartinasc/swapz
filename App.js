@@ -5,7 +5,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
+
 // import { ThemeProvider } from "./contexts/Theme";
+
+import SingleItem from "./components/SingleItem";
+
 
 import TabNavigator from "./components/TabNavigator";
 import AddItem from "./components/AddItem";
@@ -14,6 +18,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator>
@@ -23,5 +28,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
+
   );
 }

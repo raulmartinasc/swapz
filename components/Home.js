@@ -17,18 +17,31 @@ const Home = ({ navigation }) => {
     });
   }, []);
   let key = 0;
+
+  const navigateToItem = (item) => {
+    navigation.navigate("SingleItem", { item });
+  };
+
   return (
     <View>
       <Text>{userInfo.username}</Text>
       {items.map((item) => {
         key++;
+
         return (
           <View key={key}>
             <Text>{item.itemName}</Text>
-            <Image
-              source={{ uri: item.itemImg }}
-              style={{ width: 200, height: 200 }}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                return navigateToItem(item);
+              }}
+            >
+              <Image
+                source={{ uri: item.itemImg }}
+                style={{ width: 200, height: 200 }}
+              />
+              {console.log(item.itemImg)}
+            </TouchableOpacity>
           </View>
         );
       })}
