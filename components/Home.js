@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 const Home = ({ navigation }) => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
-
   useEffect(() => {
     getDocs(collection(db, "items")).then((result) => {
       setItems(
@@ -18,6 +19,7 @@ const Home = ({ navigation }) => {
   let key = 0;
   return (
     <View>
+      <Text>{userInfo.username}</Text>
       {items.map((item) => {
         key++;
         return (

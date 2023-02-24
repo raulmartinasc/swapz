@@ -13,12 +13,16 @@ import { setDoc, getDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 
+import { useContext } from "react";
+import { UserContext } from "../Context/UserContext";
+
 const Registration = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
   const [username, setUsername] = useState("");
+  const { userInfo, setUserInfo } = useContext(UserContext);
 
   const returnToLogin = () => {
     navigation.replace("Login");
@@ -29,22 +33,26 @@ const Registration = ({ navigation }) => {
       .then((userCredential) => {
         const user = userCredential;
         console.log(`registered with with ${user._tokenResponse.email}`);
-        setDoc(doc(db, "users", username), {
+        setDoc(doc(db, "users", email), {
+          username: username,
           firstName: firstName,
           lastName: lastName,
           email: auth.currentUser?.email,
         })
           .then(() => {
-            const docRef = doc(db, "users", username);
+            const docRef = doc(db, "users", auth.currentUser?.email);
             return docRef;
           })
           .then((docRef) => {
             const userInfo = getDoc(docRef);
             return userInfo;
           })
-          .then((userInfo) => {
+          .then((userInfoData) => {
             //this is where it would be added to global context
-            console.log(userInfo.data());
+            setUserInfo(userInfoData.data());
+            console.log(userInfo);
+          })
+          .then(() => {
             navigation.replace("Home");
           })
           .catch((err) => {

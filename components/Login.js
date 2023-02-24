@@ -6,13 +6,20 @@ import {
   TextInput,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState, useEffect, useContext } from "react";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  getAuth,
+} from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
 import { Image } from "react-native";
+import { doc, getDoc } from "firebase/firestore";
+import { UserContext } from "../Context/UserContext";
 const logo = require("../swap.png");
 
 const Login = ({ navigation }) => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -22,8 +29,12 @@ const Login = ({ navigation }) => {
   };
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
+        const docRef = doc(db, "users", user.email);
+        getDoc(docRef).then((res) => {
+          setUserInfo(res.data());
+        });
         navigation.replace("Main");
       }
     });
@@ -32,6 +43,10 @@ const Login = ({ navigation }) => {
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const user = userCredential;
+      const docRef = doc(db, "users", user._tokenResponse.email);
+      getDoc(docRef).then((res) => {
+        setUserInfo(res.data());
+      });
       console.log(`Logged in with ${user._tokenResponse.email}`);
       setLoggedIn(true);
     });

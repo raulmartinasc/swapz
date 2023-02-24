@@ -5,19 +5,23 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
+// import { ThemeProvider } from "./contexts/Theme";
 
 import TabNavigator from "./components/TabNavigator";
 import AddItem from "./components/AddItem";
+import { UserProvider } from "./Context/UserContext";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Registration" component={Registration} />
-        <Stack.Screen name="Main" component={TabNavigator} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Registration" component={Registration} />
+          <Stack.Screen name="Main" component={TabNavigator} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }
