@@ -16,7 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { UserContext } from "../Context/UserContext";
 
 const AddItem = ({ navigation }) => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  // const { userInfo, setUserInfo } = useContext(UserContext);
   const time = Timestamp.now();
   const currTime = time.toDate();
   const [itemName, setItemName] = useState("");
@@ -46,7 +46,7 @@ const AddItem = ({ navigation }) => {
   const submitItem = () => {
     //future idea, split the tags by commas and post an array, would need to find a way to index through and query maybe we can use .includes()
     const itemData = {
-      username: userInfo.username,
+      username: "userinfo.username",
       itemName: itemName,
       itemLocation: itemLocation,
       itemDesc: itemDesc,
@@ -56,7 +56,6 @@ const AddItem = ({ navigation }) => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-
         // navigation.replace("SingleItem"); << this is going to be an issue, need to pass a freshly submitted item into single item
         console.log(res);
       })
@@ -65,7 +64,6 @@ const AddItem = ({ navigation }) => {
       });
 
     setImage(null);
-   
   };
   return (
     <ScrollView>
@@ -105,7 +103,6 @@ const AddItem = ({ navigation }) => {
       </TouchableOpacity>
 
       <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
-
     </ScrollView>
   );
 };

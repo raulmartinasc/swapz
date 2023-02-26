@@ -7,7 +7,7 @@ import { UserContext } from "../Context/UserContext";
 import { doc, updateDoc } from "firebase/firestore";
 
 const User = ({ navigation }) => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  // const { userInfo, setUserInfo } = useContext(UserContext);
   const [update, setUpdate] = useState(false);
 
   const handleSignOut = () => {
@@ -24,15 +24,15 @@ const User = ({ navigation }) => {
     });
   };
 
-  console.log(userInfo);
+  // console.log(userInfo);
   return (
     <View>
-      <Image
+      {/* <Image
         source={{ uri: userInfo.avatarImg }}
         style={{ width: 200, height: 200 }}
-      />
-      <Text>Hello {userInfo.firstName}!</Text>
-      <Text>You are currently signed in as: {userInfo.username}</Text>
+      /> */}
+      {/* <Text>Hello {userInfo.firstName}!</Text> */}
+      {/* <Text>You are currently signed in as: {userInfo.username}</Text> */}
       <Text>Email: {auth.currentUser?.email}</Text>
       <TouchableOpacity onPress={updateAvatarImg} style={styles.button}>
         <Text style={styles.buttonText}>update to cool image</Text>
