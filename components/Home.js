@@ -14,7 +14,7 @@ import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Context/UserContext";
 
 const Home = ({ navigation }) => {
-  // const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
   const [displayUsername, setDisplayUsername] = useState("not loaded");
   useEffect(() => {
@@ -27,9 +27,9 @@ const Home = ({ navigation }) => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   setDisplayUsername(userInfo.username);
-  // }, [items]);
+  useEffect(() => {
+    setDisplayUsername(userInfo.username);
+  }, [items]);
   let key = 0;
 
   const navigateToItem = (item) => {

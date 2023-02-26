@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  View,
   TouchableOpacity,
   Image,
 } from "react-native";
@@ -16,7 +17,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { UserContext } from "../Context/UserContext";
 
 const AddItem = ({ navigation }) => {
-  // const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const time = Timestamp.now();
   const currTime = time.toDate();
   const [itemName, setItemName] = useState("");
@@ -46,7 +47,7 @@ const AddItem = ({ navigation }) => {
   const submitItem = () => {
     //future idea, split the tags by commas and post an array, would need to find a way to index through and query maybe we can use .includes()
     const itemData = {
-      username: "userinfo.username",
+      username: userInfo.username,
       itemName: itemName,
       itemLocation: itemLocation,
       itemDesc: itemDesc,
@@ -56,7 +57,7 @@ const AddItem = ({ navigation }) => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-        // navigation.replace("SingleItem"); << this is going to be an issue, need to pass a freshly submitted item into single item
+        // navigation.replace("SingleItem");
         console.log(res);
       })
       .catch((err) => {
@@ -66,7 +67,7 @@ const AddItem = ({ navigation }) => {
     setImage(null);
   };
   return (
-    <ScrollView>
+    <ScrollView style={{ marginTop: 70 }}>
       <TextInput
         style={styles.textInput}
         placeholder="Item Name"
@@ -92,17 +93,19 @@ const AddItem = ({ navigation }) => {
         onChangeText={(itemTags) => setItemTags(itemTags)}
       />
       <ImageSelector image={image} setImage={setImage} />
-      <TouchableOpacity
-        onPress={(image) => uploadImage(image)}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>upload image</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={submitItem} style={styles.button}>
-        <Text style={styles.buttonText}>Submit Item</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          onPress={(image) => uploadImage(image)}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>upload image</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={submitItem} style={styles.button}>
+          <Text style={styles.buttonText}>Submit Item</Text>
+        </TouchableOpacity>
+      </View>
 
-      <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
+      {/* <Image source={{ uri: imageURL }} style={styles.image} /> */}
     </ScrollView>
   );
 };
@@ -113,44 +116,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    padding: 20,
+    marginTop: 50,
     alignItems: "center",
     justifyContent: "center",
-  },
-  text: {
-    textAlign: "center",
-    fontSize: 30,
-    padding: 10,
   },
   textInput: {
     borderWidth: 1,
     borderRadius: 5,
-    margin: 12,
+    marginVertical: 10,
     padding: 10,
     height: 40,
-    width: 170,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
     backgroundColor: "#0782F9",
-    width: "100%",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginTop: 5,
-  },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#0782F9",
-    borderWidth: 2,
+    marginTop: 10,
+    width: 150,
   },
   buttonText: {
     color: "white",
     fontWeight: "700",
     fontSize: 16,
   },
-  buttonOutlineText: {
-    color: "#0782F9",
-    fontWeight: "500",
-    fontSize: 16,
+  image: {
+    width: 200,
+    height: 200,
+    marginVertical: 10,
   },
 });
