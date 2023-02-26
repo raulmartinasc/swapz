@@ -56,12 +56,16 @@ const AddItem = ({ navigation }) => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
+
         // navigation.replace("SingleItem"); << this is going to be an issue, need to pass a freshly submitted item into single item
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    setImage(null);
+   
   };
   return (
     <ScrollView>
@@ -99,7 +103,9 @@ const AddItem = ({ navigation }) => {
       <TouchableOpacity onPress={submitItem} style={styles.button}>
         <Text style={styles.buttonText}>Submit Item</Text>
       </TouchableOpacity>
+
       <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
+
     </ScrollView>
   );
 };

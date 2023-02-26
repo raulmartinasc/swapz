@@ -1,4 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Dimensions,
+  Platform,
+} from "react-native";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { useEffect, useState, useContext } from "react";
@@ -23,80 +32,76 @@ const Home = ({ navigation }) => {
   }, [items]);
   let key = 0;
 
+
   const navigateToItem = (item) => {
     navigation.navigate("SingleItem", { item });
   };
 
-  return (
-    <View>
-      <Text>{displayUsername}</Text>
-      {items.map((item) => {
-        key++;
 
-        return (
-          <View key={key}>
-            <Text>{item.itemName}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                return navigateToItem(item);
-              }}
-            >
-              <Image
-                source={{ uri: item.itemImg }}
-                style={{ width: 200, height: 200 }}
-              />
-            </TouchableOpacity>
-          </View>
-        );
-      })}
-    </View>
+  const numColumns = 3; // change this to change number of columns
+  const screenWidth = Dimensions.get("window").width;
+  const cardWidth = screenWidth / numColumns - 20; // subtracting 20 for margin
+
+  const renderCard = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          return navigateToItem(item);
+        }}
+      >
+        <View style={[styles.card, { width: cardWidth }]}>
+          <Image source={{ uri: item.itemImg }} style={styles.cardImage} />
+          <Text style={styles.cardText}>{item.itemName}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={items}
+        renderItem={renderCard}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={numColumns}
+      />
+     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingTop: 50,
+    paddingHorizontal: 10,
   },
-  inputContainer: {
-    width: "80%",
-  },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+  card: {
+    width: "30%",
+    margin: 5,
     borderRadius: 10,
-    marginTop: 5,
-  },
-  buttonContainer: {
-    width: "60%",
-    justifyContent: "center",
+    overflow: "hidden",
+    backgroundColor: "#f8f8f8",
     alignItems: "center",
-    marginTop: 40,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  button: {
-    backgroundColor: "#0782f9",
+  cardImage: {
     width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
+    height: 100,
+    resizeMode: "cover",
   },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#0782f9",
-    borderWidth: 2,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-  buttonOutlineText: {
-    color: "#0782f9",
-    fontWeight: "500",
-    fontSize: 16,
+  cardText: {
+    padding: 10,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
 
