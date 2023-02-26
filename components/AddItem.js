@@ -7,14 +7,16 @@ import {
   Image,
 } from "react-native";
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ImageSelector from "./ImageSelector";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { NavigationContainer } from "@react-navigation/native";
+import { UserContext } from "../Context/UserContext";
 
-const AddItem = () => {
+const AddItem = ({ navigation }) => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const time = Timestamp.now();
   const currTime = time.toDate();
   const [itemName, setItemName] = useState("");
@@ -44,7 +46,7 @@ const AddItem = () => {
   const submitItem = () => {
     //future idea, split the tags by commas and post an array, would need to find a way to index through and query maybe we can use .includes()
     const itemData = {
-      username: "username",
+      username: userInfo.username,
       itemName: itemName,
       itemLocation: itemLocation,
       itemDesc: itemDesc,
@@ -54,14 +56,16 @@ const AddItem = () => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-        navigation.replace("SingleItem");
+
+        // navigation.replace("SingleItem"); << this is going to be an issue, need to pass a freshly submitted item into single item
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
+
     setImage(null);
-    //navigate to single item page once uploaded
+   
   };
   return (
     <ScrollView>
@@ -99,6 +103,9 @@ const AddItem = () => {
       <TouchableOpacity onPress={submitItem} style={styles.button}>
         <Text style={styles.buttonText}>Submit Item</Text>
       </TouchableOpacity>
+
+      <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />
+
     </ScrollView>
   );
 };

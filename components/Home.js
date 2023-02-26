@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 const Home = ({ navigation }) => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
-
+  const [displayUsername, setDisplayUsername] = useState("not loaded");
   useEffect(() => {
     getDocs(collection(db, "items")).then((result) => {
       setItems(
@@ -25,9 +27,16 @@ const Home = ({ navigation }) => {
     });
   }, []);
 
+  useEffect(() => {
+    setDisplayUsername(userInfo.username);
+  }, [items]);
+  let key = 0;
+
+
   const navigateToItem = (item) => {
     navigation.navigate("SingleItem", { item });
   };
+
 
   const numColumns = 3; // change this to change number of columns
   const screenWidth = Dimensions.get("window").width;
@@ -56,7 +65,7 @@ const Home = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
         numColumns={numColumns}
       />
-    </View>
+     </View>
   );
 };
 

@@ -34,6 +34,7 @@ const SingleItem = (item, { navigation }) => {
         source={{ uri: itemDetails.itemImg }}
         style={{ width: 200, height: 200 }}
       />
+      <Text>Posted by {itemDetails.username}</Text>
       <Text>Location:{itemDetails.itemLocation}</Text>
       <Text>Decription:{itemDetails.itemDescription}</Text>
       <Text>Tags: {itemDetails.itemTags}</Text>
