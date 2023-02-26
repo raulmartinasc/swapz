@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, {useEffect} from "react";
-import {useState} from "react";
-import {collection, addDoc, Timestamp} from "firebase/firestore";
-import {db} from "../firebaseConfig";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 import ImageSelector from "./ImageSelector";
-import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-import {NavigationContainer} from "@react-navigation/native";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { NavigationContainer } from "@react-navigation/native";
 
 const AddItem = () => {
   const time = Timestamp.now();
@@ -54,13 +54,13 @@ const AddItem = () => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-        navitation.replace("SingleItem");
+        navigation.replace("SingleItem");
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
-
+    setImage(null);
     //navigate to single item page once uploaded
   };
   return (
@@ -99,7 +99,6 @@ const AddItem = () => {
       <TouchableOpacity onPress={submitItem} style={styles.button}>
         <Text style={styles.buttonText}>Submit Item</Text>
       </TouchableOpacity>
-      <Image source={{uri: imageURL}} style={{width: 200, height: 200}} />
     </ScrollView>
   );
 };
