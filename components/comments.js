@@ -17,16 +17,24 @@ import {
   query,
   addDoc,
   Timestamp,
+  deleteDoc,
 } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../Context/UserContext";
+import {db} from "../firebaseConfig";
+import {useEffect, useState, useContext} from "react";
+import {UserContext} from "../Context/UserContext";
 
 const Comments = (itemDetails) => {
   const [comments, setComments] = useState([]);
   const item = itemDetails.route.params.item.itemName;
-  const { userInfo } = useContext(UserContext);
+  const {userInfo} = useContext(UserContext);
   const [documentId, setDocumentId] = useState("");
+  const [shouldShow, setShouldShow] = useState(false);
+
+  const handleDelete = (id) => {
+    deleteDoc(doc(db, `comments`, id)).then((res) => {
+      console.log(res);
+    });
+  };
 
   const CommentAdder = () => {
     const [commentText, setCommentText] = useState("");
@@ -34,11 +42,13 @@ const Comments = (itemDetails) => {
     const currTime = time.toDate();
 
     const submitComment = () => {
+      console.log(userInfo);
       const newCommentData = {
         itemId: documentId,
         User: userInfo.username,
         Comment: commentText,
         Posted: currTime,
+        matches: false,
       };
       addDoc(collection(db, `comments`), newCommentData)
         .then((res) => {
@@ -51,7 +61,7 @@ const Comments = (itemDetails) => {
     };
 
     return (
-      <ScrollView style={{ marginTop: 70 }}>
+      <ScrollView style={{marginTop: 70}}>
         <TextInput
           style={styles.textInput}
           placeholder="Add new comment"
@@ -71,6 +81,7 @@ const Comments = (itemDetails) => {
   };
 
   useEffect(() => {
+    console.log(userInfo);
     const getDocumentId = async () => {
       const q = query(
         collection(db, "items"),
@@ -87,7 +98,18 @@ const Comments = (itemDetails) => {
         where("itemId", "==", `${docId}`)
       );
       getDocs(commentQ).then((querySnapshot) => {
-        setComments(querySnapshot.docs.map((doc) => doc.data()));
+        setComments(
+          querySnapshot.docs.map((doc) => {
+            let commentData = doc.data();
+            commentData.id = doc.id;
+            if (commentData.User === userInfo.username) {
+              commentData.matches = true;
+              console.log(doc.id);
+            }
+            console.log(commentData);
+            return commentData;
+          })
+        );
       });
     });
   }, []);
@@ -103,6 +125,16 @@ const Comments = (itemDetails) => {
             <Text>User: {comment.User}</Text>
             <Text>Posted at: {comment.Posted.toDate().toDateString()}</Text>
             <Text>Comment: {comment.Comment}</Text>
+            {comment.matches ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  handleDelete(comment.id);
+                }}
+              >
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         );
       })}
