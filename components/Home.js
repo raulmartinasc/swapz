@@ -8,13 +8,13 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../Context/UserContext";
+import {doc, getDoc, collection, getDocs} from "firebase/firestore";
+import {db} from "../firebaseConfig";
+import {useEffect, useState, useContext} from "react";
+import {UserContext} from "../Context/UserContext";
 
-const Home = ({ navigation }) => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+const Home = ({navigation}) => {
+  const {userInfo, setUserInfo} = useContext(UserContext);
   const [items, setItems] = useState([]);
   const [displayUsername, setDisplayUsername] = useState("not loaded");
   useEffect(() => {
@@ -27,28 +27,28 @@ const Home = ({ navigation }) => {
     });
   }, []);
 
-  useEffect(() => {
-    setDisplayUsername(userInfo.username);
-  }, [items]);
+  // useEffect(() => {
+  //   setDisplayUsername(userInfo.username);
+  // }, [items]);
   let key = 0;
 
   const navigateToItem = (item) => {
-    navigation.navigate("SingleItem", { item });
+    navigation.navigate("SingleItem", {item});
   };
 
   const numColumns = 3; // change this to change number of columns
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth / numColumns - 20; // subtracting 20 for margin
 
-  const renderCard = ({ item }) => {
+  const renderCard = ({item}) => {
     return (
       <TouchableOpacity
         onPress={() => {
           return navigateToItem(item);
         }}
       >
-        <View style={[styles.card, { width: cardWidth }]}>
-          <Image source={{ uri: item.itemImg }} style={styles.cardImage} />
+        <View style={[styles.card, {width: cardWidth}]}>
+          <Image source={{uri: item.itemImg}} style={styles.cardImage} />
           <Text style={styles.cardText}>{item.itemName} </Text>
         </View>
       </TouchableOpacity>

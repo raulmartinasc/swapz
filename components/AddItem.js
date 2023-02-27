@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect } from "react";
-import { useState, useContext } from "react";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import React, {useEffect} from "react";
+import {useState, useContext} from "react";
+import {collection, addDoc, Timestamp} from "firebase/firestore";
+import {db} from "../firebaseConfig";
 import ImageSelector from "./ImageSelector";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { NavigationContainer } from "@react-navigation/native";
-import { UserContext } from "../Context/UserContext";
+import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {NavigationContainer} from "@react-navigation/native";
+import {UserContext} from "../Context/UserContext";
 
-const AddItem = ({ navigation }) => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+const AddItem = ({navigation}) => {
+  const {userInfo, setUserInfo} = useContext(UserContext);
   const time = Timestamp.now();
   const currTime = time.toDate();
   const [itemName, setItemName] = useState("");
@@ -58,7 +58,7 @@ const AddItem = ({ navigation }) => {
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
         // navigation.replace("SingleItem");
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -67,7 +67,7 @@ const AddItem = ({ navigation }) => {
     setImage(null);
   };
   return (
-    <ScrollView style={{ marginTop: 70 }}>
+    <ScrollView style={{marginTop: 70}}>
       <View></View>
       <TextInput
         style={styles.textInput}
