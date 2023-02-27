@@ -8,27 +8,27 @@ import {
   Pressable,
 } from "react-native";
 import React from "react";
-import {signOut} from "firebase/auth";
-import {NavigationContainer} from "@react-navigation/native";
-import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-import {collection, addDoc, Timestamp, QuerySnapshot} from "firebase/firestore";
+import { signOut } from "firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  collection,
+  addDoc,
+  Timestamp,
+  QuerySnapshot,
+} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import Comments from "./comments";
 
-// const itemRef = firebase.firestore.collection("items");
-
-const SingleItem = (item, {navigation}) => {
-  // console.log(item, "CONSOLE LOG SINGLE ITEM");
-  // console.log(item.route.params.item);
+const SingleItem = (item, { navigation }) => {
   const itemDetails = item.route.params.item;
 
   return (
     <View styles={styles.container}>
-      {/* {console.log("Sign")} */}
       <Text>Item: {itemDetails.itemName}</Text>
       <Image
-        source={{uri: itemDetails.itemImg}}
-        style={{width: 200, height: 200}}
+        source={{ uri: itemDetails.itemImg }}
+        style={{ width: 200, height: 200 }}
       />
       <Text>Posted by {itemDetails.username}</Text>
       <Text>Location:{itemDetails.itemLocation}</Text>
