@@ -2,7 +2,7 @@ import Home from "./Home";
 import User from "./User";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddItem from "./AddItem";
-import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SingleItem from "./SingleItem";
 import HomeScreen from "./HomeScreen";
 
@@ -13,11 +13,11 @@ function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="home" color={color} size={size} />;
+            return <FontAwesome name="home" color={color} size={size} />;
           },
         }}
       />
@@ -26,7 +26,7 @@ function TabNavigator() {
         component={AddItem}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="pluscircle" color={color} size={size} />;
+            return <Ionicons name="add-circle" color={color} size={size} />;
           },
         }}
       />
@@ -36,7 +36,7 @@ function TabNavigator() {
         component={User}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="user" size={size} color={color} />;
+            return <FontAwesome name="user" size={size} color={color} />;
           },
         }}
       />
@@ -45,7 +45,13 @@ function TabNavigator() {
         component={Offers}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="swap" color={color} size={size} />;
+            return (
+              <MaterialIcons
+                name="swap-horizontal-circle"
+                color={color}
+                size={size}
+              />
+            );
           },
         }}
       />
