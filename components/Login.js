@@ -54,7 +54,6 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      <Text style={styles}>You are in Login</Text>
       <TextInput
         style={styles.textInput}
         placeholder="Email"
@@ -95,16 +94,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 12,
     padding: 10,
-    height: 40,
+    textAlign: "center",
+    height: 50,
     width: 170,
   },
   button: {
     backgroundColor: "#0782F9",
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
+    width: "50%",
+    padding: 9,
+    borderRadius: 15,
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 10,
   },
   buttonOutline: {
     backgroundColor: "white",

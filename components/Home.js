@@ -49,7 +49,7 @@ const Home = ({ navigation }) => {
       >
         <View style={[styles.card, { width: cardWidth }]}>
           <Image source={{ uri: item.itemImg }} style={styles.cardImage} />
-          <Text style={styles.cardText}>{item.itemName}</Text>
+          <Text style={styles.cardText}>{item.itemName} </Text>
         </View>
       </TouchableOpacity>
     );
@@ -76,20 +76,13 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "30%",
-    margin: 5,
-    borderRadius: 10,
+    margin: 6,
+    borderRadius: 5,
     overflow: "hidden",
     backgroundColor: "#f8f8f8",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 9,
   },
   cardImage: {
     width: "100%",
@@ -97,7 +90,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   cardText: {
-    padding: 10,
+    fontSize: 10.1,
+    padding: 5,
     textAlign: "center",
     fontWeight: "bold",
   },

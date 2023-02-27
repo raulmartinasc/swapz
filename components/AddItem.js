@@ -68,6 +68,7 @@ const AddItem = ({ navigation }) => {
   };
   return (
     <ScrollView style={{ marginTop: 70 }}>
+      <View></View>
       <TextInput
         style={styles.textInput}
         placeholder="Item Name"
@@ -121,12 +122,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   textInput: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    width: "90%",
+    alignSelf: "center",
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 9,
     marginVertical: 10,
-    padding: 10,
+    padding: 12,
     height: 40,
+    marginBottom: 15,
   },
   buttonContainer: {
     alignItems: "center",
@@ -134,10 +142,10 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#0782F9",
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 20,
     width: 150,
   },
   buttonText: {
