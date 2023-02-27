@@ -18,15 +18,14 @@ import {
   addDoc,
   Timestamp,
 } from "firebase/firestore";
-import {db} from "../firebaseConfig";
-import {useEffect, useState, useContext} from "react";
-import {UserContext} from "../Context/UserContext";
+import { db } from "../firebaseConfig";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 const Comments = (itemDetails) => {
   const [comments, setComments] = useState([]);
   const item = itemDetails.route.params.item.itemName;
-  const {userInfo, setUserInfo} = useContext(UserContext);
-  // console.log(item);
+  const { userInfo } = useContext(UserContext);
   const [documentId, setDocumentId] = useState("");
 
   const CommentAdder = () => {
@@ -34,17 +33,14 @@ const Comments = (itemDetails) => {
     const time = Timestamp.now();
     const currTime = time.toDate();
 
-    console.log(commentText);
-
-    const submitComment = (documentId) => {
+    const submitComment = () => {
       const newCommentData = {
+        itemId: documentId,
         User: userInfo.username,
         Comment: commentText,
         Posted: currTime,
       };
-      console.log(documentId);
-      // const subColRef = collection(doc(db, "items", documentId), "Comments");
-      addDoc(collection(db, `items/${documentId}/Comments`), newCommentData)
+      addDoc(collection(db, `comments`), newCommentData)
         .then((res) => {
           console.log(res);
         })
@@ -55,7 +51,7 @@ const Comments = (itemDetails) => {
     };
 
     return (
-      <ScrollView style={{marginTop: 70}}>
+      <ScrollView style={{ marginTop: 70 }}>
         <TextInput
           style={styles.textInput}
           placeholder="Add new comment"
@@ -64,7 +60,7 @@ const Comments = (itemDetails) => {
         />
         <TouchableOpacity
           onPress={() => {
-            submitComment(documentId);
+            submitComment();
           }}
           style={styles.button}
         >
@@ -81,36 +77,35 @@ const Comments = (itemDetails) => {
         where("itemName", "==", `${item}`)
       );
       const querySnapshot = await getDocs(q);
-      // console.log(querySnapshot.docs[0].id);
       const documentId = querySnapshot.docs[0].id;
       return documentId;
     };
     getDocumentId().then((docId) => {
       setDocumentId(docId);
-      console.log(docId);
-      getDocs(collection(db, `items/${docId}/Comments`)).then(
-        (querySnapshot) => {
-          console.log(querySnapshot);
-          setComments(querySnapshot.docs.map((doc) => doc.data()));
-        }
+      const commentQ = query(
+        collection(db, "comments"),
+        where("itemId", "==", `${docId}`)
       );
+      getDocs(commentQ).then((querySnapshot) => {
+        setComments(querySnapshot.docs.map((doc) => doc.data()));
+      });
     });
   }, []);
-
+  let key = 0;
   return (
     <View>
       {CommentAdder()}
       <Text>Comments and Offers :</Text>
-      {console.log(comments)}
-      {comments.map((comment) => (
-        <View key={comment.comment}>
-          {/* {console.log(comment)} */}
-          {/* {console.log(comment.Posted.toDate().toDateString())} */}
-          <Text>User: {comment.User}</Text>
-          <Text>Posted at: {comment.Posted.toDate().toDateString()}</Text>
-          <Text>Comment: {comment.Comment}</Text>
-        </View>
-      ))}
+      {comments.map((comment) => {
+        key++;
+        return (
+          <View key={key}>
+            <Text>User: {comment.User}</Text>
+            <Text>Posted at: {comment.Posted.toDate().toDateString()}</Text>
+            <Text>Comment: {comment.Comment}</Text>
+          </View>
+        );
+      })}
     </View>
   );
 };
