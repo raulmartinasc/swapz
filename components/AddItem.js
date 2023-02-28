@@ -102,7 +102,7 @@ const AddItem = ({ navigation }) => {
           onPress={(image) => uploadImage(image)}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>upload image</Text>
+          <Text style={styles.buttonText}>Upload image</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={submitItem} style={styles.button}>
           <Text style={styles.buttonText}>Submit Item</Text>
