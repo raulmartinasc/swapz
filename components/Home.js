@@ -70,7 +70,7 @@ const Home = ({ navigation }) => {
         numColumns={numColumns}
       />
       <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-        <FontAwesome name="refresh" size={18} color="black" />
+        <FontAwesome name="refresh" size={18} color="white" />
       </TouchableOpacity>
     </View>
   );
