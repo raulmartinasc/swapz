@@ -19,14 +19,14 @@ import {
   Timestamp,
   deleteDoc,
 } from "firebase/firestore";
-import {db} from "../firebaseConfig";
-import {useEffect, useState, useContext} from "react";
-import {UserContext} from "../Context/UserContext";
+import { db } from "../firebaseConfig";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 const Comments = (itemDetails) => {
   const [comments, setComments] = useState([]);
   const item = itemDetails.route.params.item.itemName;
-  const {userInfo} = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const [documentId, setDocumentId] = useState("");
   const [shouldShow, setShouldShow] = useState(false);
 
@@ -41,7 +41,7 @@ const Comments = (itemDetails) => {
     const time = Timestamp.now();
     const currTime = time.toDate();
 
-    const submitComment = () => {
+    const submitComment = (boolean) => {
       console.log(userInfo);
       const newCommentData = {
         itemId: documentId,
@@ -49,6 +49,7 @@ const Comments = (itemDetails) => {
         Comment: commentText,
         Posted: currTime,
         matches: false,
+        isOffer: boolean,
       };
       addDoc(collection(db, `comments`), newCommentData)
         .then((res) => {
@@ -61,7 +62,7 @@ const Comments = (itemDetails) => {
     };
 
     return (
-      <ScrollView style={{marginTop: 70}}>
+      <ScrollView style={{ marginTop: 70 }}>
         <TextInput
           style={styles.textInput}
           placeholder="Add new comment"
@@ -70,11 +71,19 @@ const Comments = (itemDetails) => {
         />
         <TouchableOpacity
           onPress={() => {
-            submitComment();
+            submitComment(false);
           }}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Submit Comment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            submitComment(true);
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Submit Offer</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -114,10 +123,11 @@ const Comments = (itemDetails) => {
     });
   }, []);
   let key = 0;
+  console.log();
   return (
     <View>
       {CommentAdder()}
-      <Text>Comments and Offers :</Text>
+      <Text>Comments and Offers:</Text>
       {comments.map((comment) => {
         key++;
         return (
@@ -133,6 +143,12 @@ const Comments = (itemDetails) => {
                 }}
               >
                 <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            ) : null}
+            {comment.isOffer ? (
+              <TouchableOpacity style={styles.button}>
+                {/* STILL NEED TO ADD PROFILE PAGE TO LINK TO  */}
+                <Text style={styles.buttonText}>View Profile</Text>
               </TouchableOpacity>
             ) : null}
           </View>
