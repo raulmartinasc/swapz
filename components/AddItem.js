@@ -57,11 +57,14 @@ const AddItem = ({ navigation }) => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-        // navigation.replace("SingleItem");
-        console.log(res);
+        navigation.navigate("HomeScreen");
+        setItemName("");
+        setItemLocation("");
+        setItemDesc("");
+        setItemTags("");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err, "catch block addDoc in addItem.js");
       });
 
     setImage(null);
@@ -105,8 +108,6 @@ const AddItem = ({ navigation }) => {
           <Text style={styles.buttonText}>Submit Item</Text>
         </TouchableOpacity>
       </View>
-
-      {/* <Image source={{ uri: imageURL }} style={styles.image} /> */}
     </ScrollView>
   );
 };

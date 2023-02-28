@@ -18,17 +18,13 @@ import {
   QuerySnapshot,
 } from "firebase/firestore";
 import firebase from "firebase/compat/app";
-
-// const itemRef = firebase.firestore.collection("items");
+import Comments from "./comments";
 
 const SingleItem = (item, { navigation }) => {
-  console.log(item, "CONSOLE LOG SINGLE ITEM");
-  console.log(item.route.params.item);
   const itemDetails = item.route.params.item;
 
   return (
     <View styles={styles.container}>
-      {console.log("Sign")}
       <Text>Item: {itemDetails.itemName}</Text>
       <Image
         source={{ uri: itemDetails.itemImg }}
@@ -38,6 +34,7 @@ const SingleItem = (item, { navigation }) => {
       <Text>Location:{itemDetails.itemLocation}</Text>
       <Text>Decription:{itemDetails.itemDescription}</Text>
       <Text>Tags: {itemDetails.itemTags}</Text>
+      {Comments(item)}
     </View>
   );
 };

@@ -12,12 +12,13 @@ import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Context/UserContext";
-
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 const Home = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
   const [displayUsername, setDisplayUsername] = useState("not loaded");
-  useEffect(() => {
+
+  const fetchItems = () => {
     getDocs(collection(db, "items")).then((result) => {
       setItems(
         result.docs.map((item) => {
@@ -25,11 +26,12 @@ const Home = ({ navigation }) => {
         })
       );
     });
-  }, []);
+  };
 
   useEffect(() => {
-    setDisplayUsername(userInfo.username);
-  }, [items]);
+    fetchItems();
+  }, []);
+
   let key = 0;
 
   const navigateToItem = (item) => {
@@ -55,6 +57,10 @@ const Home = ({ navigation }) => {
     );
   };
 
+  const handleRefresh = () => {
+    fetchItems();
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -63,6 +69,9 @@ const Home = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
         numColumns={numColumns}
       />
+      <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
+        <FontAwesome name="refresh" size={18} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -93,6 +102,18 @@ const styles = StyleSheet.create({
     fontSize: 10.1,
     padding: 5,
     textAlign: "center",
+    fontWeight: "bold",
+  },
+  refreshButton: {
+    backgroundColor: "#00ADEF",
+    padding: 10,
+    borderRadius: 50,
+    marginTop: 5,
+    marginBottom: 5,
+    alignSelf: "center",
+  },
+  refreshButtonText: {
+    color: "#fff",
     fontWeight: "bold",
   },
 });
