@@ -24,14 +24,22 @@ export default function ImageSelector({ image, setImage }) {
       });
   };
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        alignSelf: "center",
+      }}
+    >
       <TouchableOpacity
         style={styles.buttonContainer}
         title="Pick an image from camera roll"
         onPress={handleSelectImages}
       >
-        <FontAwesome name="camera" size={24} color="black" />
-        <Text>Pick an image from camera roll</Text>
+        <FontAwesome name="camera" size={18} color="white">
+          {"  Pick an image"}
+        </FontAwesome>
       </TouchableOpacity>
 
       {image && (
@@ -46,9 +54,16 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
   buttonContainer: {
-    flex: 0,
+    flex: 1,
     width: 200,
+    marginTop: 15,
+    backgroundColor: "#0782F9",
+    width: "50%",
+    padding: 10,
+    borderRadius: 7,
+    alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
   },
 });
 
