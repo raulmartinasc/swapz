@@ -19,15 +19,15 @@ import {
   Timestamp,
   deleteDoc,
 } from "firebase/firestore";
-import {db} from "../firebaseConfig";
-import {useEffect, useState, useContext} from "react";
-import {UserContext} from "../Context/UserContext";
-import {useNavigation} from "@react-navigation/native";
+import { db } from "../firebaseConfig";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Context/UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 const Comments = (itemDetails) => {
   const [comments, setComments] = useState([]);
   const item = itemDetails.route.params.item.itemName;
-  const {userInfo} = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const [documentId, setDocumentId] = useState("");
   const [shouldShow, setShouldShow] = useState(false);
   const navigation = useNavigation();
@@ -64,28 +64,36 @@ const Comments = (itemDetails) => {
     };
 
     return (
-      <ScrollView style={{marginTop: 70}}>
+      <ScrollView style={{ marginTop: 70 }}>
         <TextInput
           style={styles.textInput}
           placeholder="Add new comment"
           value={commentText}
           onChangeText={(commentText) => setCommentText(commentText)}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             submitComment(false);
           }}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Submit Comment</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             submitComment(true);
           }}
-          style={styles.button}
+          style={{
+            backgroundColor: "#0782f9",
+            width: 115,
+            margin: 10,
+            padding: 8,
+            borderRadius: 10,
+            alignItems: "center",
+            alignSelf: "center",
+          }}
         >
-          <Text style={styles.buttonText}>Submit Offer</Text>
+          <Text style={{ color: "white" }}>Submit Offer</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -123,7 +131,7 @@ const Comments = (itemDetails) => {
   }, []);
   const handleNavigateToUser = (comment) => {
     console.log(comment.User);
-    navigation.navigate("OtherUser", {user: comment.User});
+    navigation.navigate("OtherUser", { user: comment.User });
   };
   let key = 0;
   return (
@@ -133,30 +141,34 @@ const Comments = (itemDetails) => {
       {comments.map((comment) => {
         key++;
         return (
-          <View key={key}>
-            <Text>User: {comment.User}</Text>
-            <Text>Posted at: {comment.Posted.toDate().toDateString()}</Text>
-            <Text>Comment: {comment.Comment}</Text>
-            {comment.matches ? (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  handleDelete(comment.id);
-                }}
-              >
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
-            ) : null}
-            {comment.isOffer ? (
-              <TouchableOpacity
-                onPress={() => {
-                  handleNavigateToUser(comment);
-                }}
-                style={styles.button}
-              >
-                <Text style={styles.buttonText}>View Profile</Text>
-              </TouchableOpacity>
-            ) : null}
+          <View key={key} style={styles.commentBox}>
+            <View style={styles.commentDetails}>
+              <Text>User: {comment.User}</Text>
+              <Text>Posted at: {comment.Posted.toDate().toDateString()}</Text>
+              <Text>Comment: {comment.Comment}</Text>
+            </View>
+            <View style={styles.commentActions}>
+              {comment.matches ? (
+                <TouchableOpacity
+                  style={[styles.button, { backgroundColor: "red" }]}
+                  onPress={() => {
+                    handleDelete(comment.id);
+                  }}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+              ) : null}
+              {comment.isOffer ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    handleNavigateToUser(comment);
+                  }}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonText}>View Profile</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
         );
       })}
@@ -182,25 +194,41 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: "center",
-    justifyContent: "center",
   },
   button: {
-    backgroundColor: "#0782F9",
-    padding: 15,
+    backgroundColor: "#0782f9",
+    width: 115,
+    marginTop: 10,
+    marginLeft: 25,
+    padding: 8,
     borderRadius: 10,
     alignItems: "center",
-    marginTop: 10,
-    width: 150,
+    alignSelf: "center",
   },
   buttonText: {
     color: "white",
-    fontWeight: "700",
-    fontSize: 16,
+    fontSize: 15,
   },
   image: {
     width: 200,
     height: 200,
     marginVertical: 10,
+  },
+  commentBox: {
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 12,
+    marginVertical: 5,
+  },
+  commentDetails: {
+    flex: 1,
+    marginRight: 10,
+  },
+  commentActions: {
+    flexShrink: 0,
+    width: "30%",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 
