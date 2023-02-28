@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   Pressable,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import { signOut } from "firebase/auth";
@@ -25,20 +26,30 @@ const SingleItem = (item) => {
   };
 
   return (
-    <View styles={styles.container}>
-      <Text>Item: {itemDetails.itemName}</Text>
-      <Image
-        source={{ uri: itemDetails.itemImg }}
-        style={{ width: 200, height: 200 }}
-      />
-      <TouchableOpacity onPress={handleNavigateToUser}>
-        <Text>Posted by {itemDetails.username}</Text>
-      </TouchableOpacity>
-      <Text>Location:{itemDetails.itemLocation}</Text>
-      <Text>Decription:{itemDetails.itemDescription}</Text>
-      <Text>Tags: {itemDetails.itemTags}</Text>
-      {Comments(item)}
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.detailsContainer}>
+        <Image
+          source={{ uri: itemDetails.itemImg }}
+          style={[styles.image, { alignSelf: "center" }]}
+        />
+        <View style={styles.row}>
+          <Text style={styles.bold}>Posted by: </Text>
+          <TouchableOpacity onPress={handleNavigateToUser}>
+            <Text>{itemDetails.username}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.bold}>Location: </Text>
+          <Text>{itemDetails.itemLocation}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.bold}>Tags: </Text>
+          <Text>{itemDetails.itemTags}</Text>
+        </View>
+        <Text style={styles.description}>{itemDetails.itemDescription}</Text>
+        {Comments(item)}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -48,44 +59,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
-  text: {
-    textAlign: "center",
-    fontSize: 30,
-    padding: 10,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 12,
-    padding: 10,
-    height: 40,
-    width: 170,
-  },
-  button: {
-    backgroundColor: "#0782F9",
-    width: "100%",
-    padding: 15,
+  image: {
+    width: 210,
+    height: 200,
     borderRadius: 10,
+    marginBottom: 30,
+    borderWidth: 5,
+    borderColor: "#ddd",
+  },
+  detailsContainer: {
+    margin: 10,
+    padding: 20,
+    borderRadius: 20,
+    elevation: 10,
+  },
+  row: {
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 10,
   },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#0782F9",
-    borderWidth: 2,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-  buttonOutlineText: {
-    color: "#0782F9",
-    fontWeight: "500",
-    fontSize: 16,
+  description: {
+    margin: -40,
   },
 });
