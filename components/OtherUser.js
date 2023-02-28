@@ -8,11 +8,12 @@ import {
   Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Route } from "@react-navigation/native";
+import { Route, useNavigation } from "@react-navigation/native";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 const OtherUser = ({ route }) => {
+  const navigation = useNavigation();
   const { user } = route.params;
   const [userInfo, setUserInfo] = useState([]);
   const [items, setUserItems] = useState([]);
@@ -34,6 +35,10 @@ const OtherUser = ({ route }) => {
       );
     });
   }, []);
+
+  const navigateToItem = (item) => {
+    navigation.navigate("SingleItem", { item });
+  };
 
   const numColumns = 3; // change this to change number of columns
   const screenWidth = Dimensions.get("window").width;
