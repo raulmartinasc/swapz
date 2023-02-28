@@ -9,19 +9,20 @@ import {
 } from "react-native";
 import React from "react";
 import { signOut } from "firebase/auth";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {
-  collection,
-  addDoc,
-  Timestamp,
-  QuerySnapshot,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import Comments from "./comments";
+import { db } from "../firebaseConfig";
 
-const SingleItem = (item, { navigation }) => {
+const SingleItem = (item) => {
   const itemDetails = item.route.params.item;
+  const navigation = useNavigation();
+
+  const handleNavigateToUser = () => {
+    navigation.navigate("OtherUser", { user: itemDetails.username });
+  };
 
   return (
     <View styles={styles.container}>
@@ -30,7 +31,9 @@ const SingleItem = (item, { navigation }) => {
         source={{ uri: itemDetails.itemImg }}
         style={{ width: 200, height: 200 }}
       />
-      <Text>Posted by {itemDetails.username}</Text>
+      <TouchableOpacity onPress={handleNavigateToUser}>
+        <Text>Posted by {itemDetails.username}</Text>
+      </TouchableOpacity>
       <Text>Location:{itemDetails.itemLocation}</Text>
       <Text>Decription:{itemDetails.itemDescription}</Text>
       <Text>Tags: {itemDetails.itemTags}</Text>
