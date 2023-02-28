@@ -1,13 +1,13 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
-import {useContext, useState} from "react";
-import {auth, db} from "../firebaseConfig";
-import {signOut} from "firebase/auth";
-import {UserContext} from "../Context/UserContext";
-import {doc, updateDoc} from "firebase/firestore";
+import { useContext, useState } from "react";
+import { auth, db } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
+import { UserContext } from "../Context/UserContext";
+import { doc, updateDoc } from "firebase/firestore";
 
-const User = ({navigation}) => {
-  const {userInfo, setUserInfo} = useContext(UserContext);
+const User = ({ navigation }) => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [update, setUpdate] = useState(false);
 
   const handleSignOut = () => {
@@ -28,8 +28,8 @@ const User = ({navigation}) => {
   return (
     <View>
       <Image
-        source={{uri: userInfo.avatarImg}}
-        style={{width: 200, height: 200}}
+        source={{ uri: userInfo.avatarImg }}
+        style={{ width: 200, height: 200 }}
       />
       <Text>Hello {userInfo.firstName}!</Text>
       <Text>You are currently signed in as: {userInfo.username}</Text>
