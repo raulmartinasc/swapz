@@ -19,18 +19,20 @@ import {
   Timestamp,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../Context/UserContext";
-import { useNavigation } from "@react-navigation/native";
+import {db} from "../firebaseConfig";
+import {useEffect, useState, useContext} from "react";
+import {UserContext} from "../Context/UserContext";
+import {useNavigation} from "@react-navigation/native";
 
 const Comments = (itemDetails) => {
   const [comments, setComments] = useState([]);
   const item = itemDetails.route.params.item.itemName;
-  const { userInfo } = useContext(UserContext);
+  const {userInfo} = useContext(UserContext);
   const [documentId, setDocumentId] = useState("");
   const [shouldShow, setShouldShow] = useState(false);
   const navigation = useNavigation();
+
+  console.log(itemDetails.route.params);
 
   const handleDelete = (id) => {
     deleteDoc(doc(db, `comments`, id)).then((res) => {});
@@ -49,6 +51,7 @@ const Comments = (itemDetails) => {
         Posted: currTime,
         matches: false,
         isOffer: boolean,
+        OriginalPoster: itemDetails.route.params.item.username,
       };
       addDoc(collection(db, `comments`), newCommentData)
         .then((res) => {
@@ -61,7 +64,7 @@ const Comments = (itemDetails) => {
     };
 
     return (
-      <ScrollView style={{ marginTop: 70 }}>
+      <ScrollView style={{marginTop: 70}}>
         <TextInput
           style={styles.textInput}
           placeholder="Add new comment"
@@ -120,7 +123,7 @@ const Comments = (itemDetails) => {
   }, []);
   const handleNavigateToUser = (comment) => {
     console.log(comment.User);
-    navigation.navigate("OtherUser", { user: comment.User });
+    navigation.navigate("OtherUser", {user: comment.User});
   };
   let key = 0;
   return (
