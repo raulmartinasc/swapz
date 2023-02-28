@@ -63,6 +63,16 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text
+        style={{
+          textAlign: "center",
+          marginBottom: 10,
+          fontSize: 20,
+          color: "#8E8E8F",
+        }}
+      >
+        Select an Item to Swap
+      </Text>
       <FlatList
         data={items}
         renderItem={renderCard}
@@ -83,6 +93,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 10,
   },
+
   card: {
     width: "30%",
     margin: 6,

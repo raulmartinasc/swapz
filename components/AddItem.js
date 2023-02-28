@@ -57,7 +57,7 @@ const AddItem = ({ navigation }) => {
     };
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-        navigation.navigate("HomeScreen");
+        navigation.navigate("Home");
         setItemName("");
         setItemLocation("");
         setItemDesc("");
