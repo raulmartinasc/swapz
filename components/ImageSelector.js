@@ -43,7 +43,22 @@ export default function ImageSelector({ image, setImage }) {
       </TouchableOpacity>
 
       {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image
+          source={{ uri: image }}
+          style={{
+            marginTop: 10,
+            width: 150,
+            height: 150,
+            borderRadius: 12,
+            borderWidth: 3,
+            borderColor: "#ddd",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 1.8,
+            shadowRadius: 4,
+            elevation: 5,
+          }}
+        />
       )}
     </View>
   );
