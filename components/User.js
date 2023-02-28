@@ -24,7 +24,6 @@ const User = ({ navigation }) => {
     });
   };
 
-  console.log(userInfo);
   return (
     <View>
       <Image

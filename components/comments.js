@@ -31,9 +31,7 @@ const Comments = (itemDetails) => {
   const [shouldShow, setShouldShow] = useState(false);
 
   const handleDelete = (id) => {
-    deleteDoc(doc(db, `comments`, id)).then((res) => {
-      console.log(res);
-    });
+    deleteDoc(doc(db, `comments`, id)).then((res) => {});
   };
 
   const CommentAdder = () => {
@@ -42,7 +40,6 @@ const Comments = (itemDetails) => {
     const currTime = time.toDate();
 
     const submitComment = (boolean) => {
-      console.log(userInfo);
       const newCommentData = {
         itemId: documentId,
         User: userInfo.username,
@@ -90,7 +87,6 @@ const Comments = (itemDetails) => {
   };
 
   useEffect(() => {
-    console.log(userInfo);
     const getDocumentId = async () => {
       const q = query(
         collection(db, "items"),
@@ -113,9 +109,7 @@ const Comments = (itemDetails) => {
             commentData.id = doc.id;
             if (commentData.User === userInfo.username) {
               commentData.matches = true;
-              console.log(doc.id);
             }
-            console.log(commentData);
             return commentData;
           })
         );
@@ -123,7 +117,6 @@ const Comments = (itemDetails) => {
     });
   }, []);
   let key = 0;
-  console.log();
   return (
     <View>
       {CommentAdder()}
