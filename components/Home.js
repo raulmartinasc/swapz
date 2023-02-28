@@ -7,6 +7,7 @@ import {
   FlatList,
   Dimensions,
   Platform,
+  RefreshControl,
 } from "react-native";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
@@ -17,7 +18,13 @@ const Home = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
   const [displayUsername, setDisplayUsername] = useState("not loaded");
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchItems();
+    setRefreshing(false);
+  };
   const fetchItems = () => {
     getDocs(collection(db, "items")).then((result) => {
       setItems(
@@ -78,10 +85,17 @@ const Home = ({ navigation }) => {
         renderItem={renderCard}
         keyExtractor={(item, index) => index.toString()}
         numColumns={numColumns}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#00ADEF"]}
+          />
+        }
       />
-      <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
+      {/* <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
         <FontAwesome name="refresh" size={18} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
