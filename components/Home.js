@@ -12,7 +12,7 @@ import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Context/UserContext";
-
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 const Home = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
@@ -70,7 +70,7 @@ const Home = ({ navigation }) => {
         numColumns={numColumns}
       />
       <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-        <Text style={styles.refreshButtonText}>Refresh</Text>
+        <FontAwesome name="refresh" size={18} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#00ADEF",
     padding: 10,
     borderRadius: 50,
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 5,
+    marginBottom: 5,
     alignSelf: "center",
   },
   refreshButtonText: {
