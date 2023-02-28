@@ -5,10 +5,12 @@ import { auth, db } from "../firebaseConfig";
 import { signOut } from "firebase/auth";
 import { UserContext } from "../Context/UserContext";
 import { doc, updateDoc } from "firebase/firestore";
+import * as ImagePicker from "expo-image-picker";
+import { FontAwesome } from "@expo/vector-icons";
 
 const User = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
-  const [update, setUpdate] = useState(false);
+  const [image, setImage] = useState("");
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
@@ -16,26 +18,60 @@ const User = ({ navigation }) => {
     });
   };
 
-  const updateAvatarImg = () => {
+  const handleSelectImages = async () => {
+    try {
+      const response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        quality: 0,
+      });
+      if (!response.canceled) {
+        setImage(response.assets[0].uri);
+        setUserInfo((prevUserInfo) => ({
+          ...prevUserInfo,
+          avatarImg: response.assets[0].uri,
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const updateAvatarImg = async () => {
     const userRef = doc(db, "users", auth.currentUser.email);
-    updateDoc(userRef, {
-      avatarImg:
-        "https://i.pinimg.com/originals/cf/35/76/cf35760687430b2228bc55ac2b182227.jpg",
-    });
+    try {
+      await updateDoc(userRef, {
+        avatarImg: image,
+      });
+
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        avatarImg: image,
+      }));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <View>
-      <Image
-        source={{ uri: userInfo.avatarImg }}
-        style={{ width: 200, height: 200 }}
-      />
-      <Text>Hello {userInfo.firstName}!</Text>
-      <Text>You are currently signed in as: {userInfo.username}</Text>
-      <Text>Email: {auth.currentUser?.email}</Text>
-      <TouchableOpacity onPress={updateAvatarImg} style={styles.button}>
-        <Text style={styles.buttonText}>update to cool image</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <Image source={{ uri: userInfo.avatarImg }} style={styles.image} />
+      <Text style={styles.text}>Hello {userInfo.firstName}!</Text>
+      <Text style={styles.text}>
+        You are currently signed in as: {userInfo.username}
+      </Text>
+      <Text style={styles.text}>Email: {auth.currentUser?.email}</Text>
+      <View style={styles.avatarContainer}>
+        <TouchableOpacity onPress={handleSelectImages} style={styles.button}>
+          <FontAwesome name="camera" size={18} color="white">
+            {"   Select Avatar "}
+          </FontAwesome>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={updateAvatarImg} style={styles.button}>
+          <Text style={styles.buttonText}>Apply Avatar</Text>
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
@@ -46,48 +82,48 @@ const User = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingHorizontal: 20,
     alignItems: "center",
-  },
-  inputContainer: {
-    width: "80%",
-  },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
-  },
-  buttonContainer: {
-    width: "60%",
     justifyContent: "center",
+  },
+  avatarContainer: {
+    justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 40,
+    width: "100%",
+    padding: 10,
+    textAlign: "center",
+  },
+  image: {
+    width: 210,
+    height: 200,
+    borderRadius: 500,
+    marginBottom: 30,
+    borderWidth: 5,
+    borderColor: "#ddd",
+  },
+  text: {
+    fontSize: 15,
+    fontWeight: "600",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  email: {
+    fontSize: 16,
+    marginBottom: 30,
+    textAlign: "center",
   },
   button: {
     backgroundColor: "#0782f9",
-    width: "100%",
-    padding: 15,
+    width: "51%",
+    padding: 12,
     borderRadius: 10,
     alignItems: "center",
-  },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#0782f9",
-    borderWidth: 2,
+    marginTop: 20,
   },
   buttonText: {
     color: "white",
     fontWeight: "700",
     fontSize: 16,
   },
-  buttonOutlineText: {
-    color: "#0782f9",
-    fontWeight: "500",
-    fontSize: 16,
-  },
 });
-
 export default User;
