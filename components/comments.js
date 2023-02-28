@@ -22,6 +22,7 @@ import {
 import { db } from "../firebaseConfig";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Context/UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 const Comments = (itemDetails) => {
   const [comments, setComments] = useState([]);
@@ -29,6 +30,7 @@ const Comments = (itemDetails) => {
   const { userInfo } = useContext(UserContext);
   const [documentId, setDocumentId] = useState("");
   const [shouldShow, setShouldShow] = useState(false);
+  const navigation = useNavigation();
 
   const handleDelete = (id) => {
     deleteDoc(doc(db, `comments`, id)).then((res) => {});
@@ -116,6 +118,10 @@ const Comments = (itemDetails) => {
       });
     });
   }, []);
+  const handleNavigateToUser = (comment) => {
+    console.log(comment.User);
+    navigation.navigate("OtherUser", { user: comment.User });
+  };
   let key = 0;
   return (
     <View>
@@ -139,8 +145,12 @@ const Comments = (itemDetails) => {
               </TouchableOpacity>
             ) : null}
             {comment.isOffer ? (
-              <TouchableOpacity style={styles.button}>
-                {/* STILL NEED TO ADD PROFILE PAGE TO LINK TO  */}
+              <TouchableOpacity
+                onPress={() => {
+                  handleNavigateToUser(comment);
+                }}
+                style={styles.button}
+              >
                 <Text style={styles.buttonText}>View Profile</Text>
               </TouchableOpacity>
             ) : null}
