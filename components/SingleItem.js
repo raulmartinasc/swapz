@@ -65,13 +65,15 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 10,
     marginBottom: 30,
+    marginTop: 20,
     borderWidth: 5,
     borderColor: "#ddd",
   },
   detailsContainer: {
+    marginTop: 26,
     margin: 10,
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 5,
     elevation: 10,
   },
   row: {
