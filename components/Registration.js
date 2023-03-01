@@ -41,6 +41,7 @@ const Registration = ({ navigation }) => {
   };
 
   const handleSignUp = () => {
+
     if (activeUsernames.usernames.includes(username)) {
       setUsernameTaken(true);
       return;

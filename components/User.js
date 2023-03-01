@@ -33,7 +33,7 @@ const User = ({ navigation }) => {
         }));
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -49,7 +49,7 @@ const User = ({ navigation }) => {
         avatarImg: image,
       }));
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

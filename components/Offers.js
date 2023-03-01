@@ -7,16 +7,16 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import {collection, query, where, getDocs} from "firebase/firestore";
-import {Route, useNavigation} from "@react-navigation/native";
-import {db} from "../firebaseConfig";
-import React, {useEffect, useState, useContext} from "react";
-import {UserContext} from "../Context/UserContext";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { Route, useNavigation } from "@react-navigation/native";
+import { db } from "../firebaseConfig";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 const Offers = () => {
-  const {userInfo} = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const [offers, setOffers] = useState([]);
-  //   console.log(userInfo);
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Offers = () => {
 
   const handleNavigateToUser = (offer) => {
     console.log(offer.User);
-    navigation.navigate("OtherUser", {user: offer.User});
+    navigation.navigate("OtherUser", { user: offer.User });
   };
 
   console.log(offers);
@@ -45,19 +45,36 @@ const Offers = () => {
       <Text>Offers</Text>
       {offers.map((offer) => {
         key++;
-        console.log(offer);
+        // console.log(offer);
         return (
-          <View key={key}>
-            <Text>User: {offer.User}</Text>
-            <Text>Posted at: {offer.Posted.toDate().toDateString()}</Text>
-            <Text>Offer: {offer.Comment}</Text>
+          <View key={key} style={styles.commentBox}>
+            <Text>
+              <Text style={{ fontWeight: "bold" }}>User: </Text>
+              {offer.User}
+            </Text>
+            <Text>
+              <Text style={{ fontWeight: "bold" }}>Posted at:</Text>{" "}
+              {offer.Posted.toDate().toDateString()}
+            </Text>
+            <Text>
+              <Text style={{ fontWeight: "bold" }}>Offer: </Text>{" "}
+              {offer.Comment}
+            </Text>
             <TouchableOpacity
-              style={styles.button}
+              style={{
+                backgroundColor: "#0782f9",
+                width: 110,
+                margin: 10,
+                padding: 8,
+                borderRadius: 10,
+                alignItems: "center",
+                alignSelf: "center",
+              }}
               onPress={() => {
                 handleNavigateToUser(offer);
               }}
             >
-              <Text style={styles.buttonText}>View Profile</Text>
+              <Text style={{ color: "white" }}>View Profile</Text>
             </TouchableOpacity>
           </View>
         );
@@ -83,6 +100,21 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 10,
     height: 40,
+  },
+  commentBox: {
+    marginTop: 20,
+    width: "80%",
+    alignSelf: "center",
+    borderRadius: 10,
+    padding: 12,
+    marginVertical: 5,
+    borderRadius: 10,
+    padding: 12,
+    marginVertical: 5,
+    borderRadius: 5,
+    overflow: "hidden",
+    backgroundColor: "#f8f8f8",
+    elevation: 9,
   },
   buttonContainer: {
     alignItems: "center",

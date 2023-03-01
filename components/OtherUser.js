@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Route, useNavigation } from "@react-navigation/native";
@@ -62,19 +63,44 @@ const OtherUser = ({ route }) => {
     <View>
       <Image
         source={{ uri: userInfo.avatarImg }}
-        style={{ width: 200, height: 200 }}
+        style={{
+          alignSelf: "center",
+          marginTop: 30,
+          margin: 5,
+          width: 210,
+          height: 200,
+          borderRadius: 200,
+          borderWidth: 2,
+          borderColor: "#ddd",
+        }}
       />
-      <Text>You are currently at {userInfo.firstName}'s page</Text>
-      <Text>{userInfo.username}</Text>
-      <Text>Email: {userInfo.email}</Text>
-      <View style={styles.container}>
-        <FlatList
-          data={items}
-          renderItem={renderCard}
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={numColumns}
-        />
-      </View>
+      <Text style={{ textAlign: "center", fontSize: 20 }}>
+        You are currently at{" "}
+        <Text style={{ fontWeight: "bold" }}>{userInfo.firstName}'s</Text> page
+      </Text>
+      <Text style={{ textAlign: "center", fontSize: 20 }}>
+        {userInfo.username}
+      </Text>
+      <Text style={{ textAlign: "center", fontSize: 20 }}>
+        <Text style={{ fontWeight: "bold" }}>Email:</Text> {userInfo.email}
+      </Text>
+
+      <Text
+        style={{
+          fontWeight: "bold",
+          fontSize: 20,
+          textAlign: "center",
+          margin: 5,
+        }}
+      >
+        Your Items
+      </Text>
+      <FlatList
+        data={items}
+        renderItem={renderCard}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={numColumns}
+      />
     </View>
   );
 };
@@ -83,11 +109,10 @@ export default OtherUser;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 10,
   },
+
   card: {
     width: "30%",
     margin: 6,

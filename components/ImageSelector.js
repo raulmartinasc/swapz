@@ -20,7 +20,7 @@ export default function ImageSelector({ image, setImage }) {
         setImage(imageUri);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   return (
