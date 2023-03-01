@@ -26,6 +26,7 @@ const Registration = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [activeUsernames, setActiveUsernames] = useState([]);
   const [usernameTaken, setUsernameTaken] = useState(false);
+  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
 
   useEffect(() => {
     getDoc(doc(db, "CurrentUsernames", "currentUsernames"))
@@ -41,7 +42,6 @@ const Registration = ({ navigation }) => {
   };
 
   const handleSignUp = () => {
-
     if (activeUsernames.usernames.includes(username)) {
       setUsernameTaken(true);
       return;
@@ -60,6 +60,7 @@ const Registration = ({ navigation }) => {
               "https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png",
           })
             .then(() => {
+              setIsEmailCorrect(true);
               updateDoc(doc(db, "CurrentUsernames", "currentUsernames"), {
                 usernames: arrayUnion(username),
               });
@@ -81,7 +82,7 @@ const Registration = ({ navigation }) => {
             });
         })
         .catch((err) => {
-          console.log(err);
+          setIsEmailCorrect(false);
         });
     }
   };
@@ -90,41 +91,89 @@ const Registration = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.text}>Register</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="username"
-          value={username}
-          onChangeText={(username) => setUsername(username)}
-        />
+        {usernameTaken ? (
+          <TextInput
+            style={[styles.textInput, { borderColor: "red" }]}
+            placeholder="username"
+            value={username}
+            onChangeText={(username) => setUsername(username)}
+          />
+        ) : (
+          <TextInput
+            style={[
+              styles.textInput,
+              { borderColor: "black", alignSelf: "center" },
+            ]}
+            placeholder="username"
+            value={username}
+            onChangeText={(username) => setUsername(username)}
+          />
+        )}
 
         {/* style this and make it red */}
-        {usernameTaken ? <Text>Username is already taken</Text> : null}
+        {usernameTaken ? (
+          <Text style={{ color: "red", textAlign: "center", marginTop: -10 }}>
+            Username is already taken
+          </Text>
+        ) : null}
 
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, { alignSelf: "center" }]}
           placeholder="Firstname"
           value={firstName}
           onChangeText={(firstName) => setFirstname(firstName)}
         />
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, { alignSelf: "center" }]}
           placeholder="Lastname"
           value={lastName}
           onChangeText={(lastName) => setLastname(lastName)}
         />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Email"
-          value={email}
-          onChangeText={(email) => setEmail(email)}
-        />
-        <TextInput
-          style={styles.textInput}
-          secureTextEntry={true}
-          placeholder="Password"
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-        />
+        {isEmailCorrect ? (
+          <TextInput
+            style={[styles.textInput, { borderColor: "black" }]}
+            placeholder="Email"
+            value={email}
+            onChangeText={(email) => setEmail(email)}
+          />
+        ) : (
+          <TextInput
+            style={[
+              styles.textInput,
+              { borderColor: "red", alignSelf: "center" },
+            ]}
+            placeholder="Email"
+            value={email}
+            onChangeText={(email) => setEmail(email)}
+          />
+        )}
+        {isEmailCorrect ? (
+          <TextInput
+            style={styles.textInput}
+            secureTextEntry={true}
+            placeholder="Password"
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+          />
+        ) : (
+          <View>
+            <TextInput
+              style={[
+                styles.textInput,
+                { borderColor: "red", alignSelf: "center" },
+              ]}
+              secureTextEntry={true}
+              placeholder="Password"
+              value={password}
+              onChangeText={(password) => setPassword(password)}
+            />
+            <Text style={{ textAlign: "center" }}>E-mail must be valid</Text>
+            <Text style={{ textAlign: "center" }}>
+              Password must have at least 6 characters
+            </Text>
+          </View>
+        )}
+
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
@@ -144,6 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
+    marginTop: 80,
     textAlign: "center",
     fontSize: 30,
     padding: 10,
