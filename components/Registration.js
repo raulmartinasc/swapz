@@ -6,10 +6,11 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db } from "../firebaseConfig";
-import { setDoc, getDoc, doc } from "firebase/firestore";
+import { setDoc, getDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -23,45 +24,65 @@ const Registration = ({ navigation }) => {
   const [lastName, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const { userInfo, setUserInfo } = useContext(UserContext);
+  const [activeUsernames, setActiveUsernames] = useState([]);
+  const [usernameTaken, setUsernameTaken] = useState(false);
 
+  useEffect(() => {
+    getDoc(doc(db, "CurrentUsernames", "currentUsernames"))
+      .then((res) => {
+        setActiveUsernames(res.data());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const returnToLogin = () => {
     navigation.replace("Login");
   };
 
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential;
-        console.log(`registered with with ${user._tokenResponse.email}`);
-        setDoc(doc(db, "users", email), {
-          username: username,
-          firstName: firstName,
-          lastName: lastName,
-          email: auth.currentUser?.email,
-          avatarImg:
-            "https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png",
+    if (activeUsernames.usernames.includes(username)) {
+      setUsernameTaken(true);
+      return;
+    } else {
+      setUsernameTaken(false);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential;
+          console.log(`registered with with ${user._tokenResponse.email}`);
+          setDoc(doc(db, "users", email.toLowerCase()), {
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            email: auth.currentUser?.email,
+            avatarImg:
+              "https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png",
+          })
+            .then(() => {
+              updateDoc(doc(db, "CurrentUsernames", "currentUsernames"), {
+                usernames: arrayUnion(username),
+              });
+              const docRef = doc(db, "users", auth.currentUser?.email);
+              return docRef;
+            })
+            .then((docRef) => {
+              const userInfo = getDoc(docRef);
+              return userInfo;
+            })
+            .then((userInfoData) => {
+              setUserInfo(userInfoData.data());
+            })
+            .then(() => {
+              navigation.replace("Home");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
-          .then(() => {
-            const docRef = doc(db, "users", auth.currentUser?.email);
-            return docRef;
-          })
-          .then((docRef) => {
-            const userInfo = getDoc(docRef);
-            return userInfo;
-          })
-          .then((userInfoData) => {
-            setUserInfo(userInfoData.data());
-          })
-          .then(() => {
-            navigation.replace("Home");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -74,6 +95,10 @@ const Registration = ({ navigation }) => {
           value={username}
           onChangeText={(username) => setUsername(username)}
         />
+
+        {/* style this and make it red */}
+        {usernameTaken ? <Text>Username is already taken</Text> : null}
+
         <TextInput
           style={styles.textInput}
           placeholder="Firstname"
