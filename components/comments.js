@@ -64,7 +64,7 @@ const Comments = (itemDetails) => {
     };
 
     return (
-      <ScrollView style={{ marginTop: 70 }}>
+      <ScrollView style={{ marginTop: 70, padding: 20 }}>
         <TextInput
           style={styles.textInput}
           placeholder="Add new comment/offer"
@@ -141,6 +141,10 @@ const Comments = (itemDetails) => {
       });
     });
   }, []);
+
+  // useEffect(()=>{
+  //   console.log(comments)
+  // })
   const handleNavigateToUser = (comment) => {
     // console.log(comment.User);
     navigation.navigate("OtherUser", { user: comment.User });
@@ -169,7 +173,7 @@ const Comments = (itemDetails) => {
               </Text>
             </View>
             <View style={styles.commentActions}>
-              {comment.matches ? (
+              {comment.isOffer ? (
                 <TouchableOpacity
                   onPress={() => {
                     handleNavigateToUser(comment);
@@ -179,7 +183,7 @@ const Comments = (itemDetails) => {
                   <Text style={styles.buttonText}>View Profile</Text>
                 </TouchableOpacity>
               ) : null}
-              {comment.isOffer ? (
+              {comment.matches ? (
                 <TouchableOpacity
                   style={[
                     styles.button,

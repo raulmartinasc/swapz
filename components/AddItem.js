@@ -28,6 +28,9 @@ const AddItem = ({ navigation }) => {
   const [imageURL, setImageURL] = useState(
     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png"
   );
+
+  const [itemNameErr, setItemNameErr] = useState(false);
+
   const uploadImage = async () => {
     const storage = getStorage();
     const filename = image.split("/").pop();
@@ -55,9 +58,16 @@ const AddItem = ({ navigation }) => {
       itemImg: imageURL,
       time: currTime,
     };
+    if (itemName.length === 0) {
+      setItemNameErr(true);
+      return;
+    }
     addDoc(collection(db, "items"), itemData)
       .then((res) => {
-        navigation.navigate("Home");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
         setItemName("");
         setItemLocation("");
         setItemDesc("");
@@ -78,6 +88,7 @@ const AddItem = ({ navigation }) => {
         value={itemName}
         onChangeText={(itemName) => setItemName(itemName)}
       />
+      {itemNameErr ? <Text>Please enter an item name</Text> : null}
       <TextInput
         style={styles.textInput}
         placeholder="Item Location"

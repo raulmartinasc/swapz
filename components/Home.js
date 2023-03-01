@@ -14,11 +14,13 @@ import { db } from "../firebaseConfig";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Context/UserContext";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-const Home = ({ navigation }) => {
+import { useNavigation } from "@react-navigation/native";
+const Home = ({ route }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [items, setItems] = useState([]);
   const [displayUsername, setDisplayUsername] = useState("not loaded");
   const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -38,8 +40,6 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     fetchItems();
   }, []);
-
-  let key = 0;
 
   const navigateToItem = (item) => {
     navigation.navigate("SingleItem", { item });
@@ -65,7 +65,10 @@ const Home = ({ navigation }) => {
   };
 
   const handleRefresh = () => {
-    fetchItems();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Home" }],
+    });
   };
 
   return (
@@ -93,9 +96,11 @@ const Home = ({ navigation }) => {
           />
         }
       />
-      {/* <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-        <FontAwesome name="refresh" size={18} color="white" />
-      </TouchableOpacity> */}
+      {Platform.OS === "web" ? (
+        <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
+          <FontAwesome name="refresh" size={18} color="white" />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
