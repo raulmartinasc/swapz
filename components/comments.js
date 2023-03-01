@@ -71,30 +71,40 @@ const Comments = (itemDetails) => {
           value={commentText}
           onChangeText={(commentText) => setCommentText(commentText)}
         />
-        {/* <TouchableOpacity
-          onPress={() => {
-            submitComment(false);
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Submit Comment</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity
-          onPress={() => {
-            submitComment(true);
-          }}
-          style={{
-            backgroundColor: "#0782f9",
-            width: 115,
-            margin: 10,
-            padding: 8,
-            borderRadius: 10,
-            alignItems: "center",
-            alignSelf: "center",
-          }}
-        >
-          <Text style={{ color: "white" }}>Submit Offer</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            onPress={() => {
+              submitComment(false);
+            }}
+            style={{
+              backgroundColor: "#0782f9",
+              width: 145,
+              margin: 10,
+              padding: 8,
+              borderRadius: 10,
+              alignItems: "center",
+              alignSelf: "center",
+            }}
+          >
+            <Text style={{ color: "white" }}>Submit Comment</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              submitComment(true);
+            }}
+            style={{
+              backgroundColor: "#0782f9",
+              width: 145,
+              margin: 10,
+              padding: 8,
+              borderRadius: 10,
+              alignItems: "center",
+              alignSelf: "center",
+            }}
+          >
+            <Text style={{ color: "white" }}>Submit Offer</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     );
   };
@@ -150,22 +160,25 @@ const Comments = (itemDetails) => {
             <View style={styles.commentActions}>
               {comment.matches ? (
                 <TouchableOpacity
-                  style={[styles.button, { backgroundColor: "red" }]}
-                  onPress={() => {
-                    handleDelete(comment.id);
-                  }}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
-              ) : null}
-              {comment.isOffer ? (
-                <TouchableOpacity
                   onPress={() => {
                     handleNavigateToUser(comment);
                   }}
                   style={styles.button}
                 >
                   <Text style={styles.buttonText}>View Profile</Text>
+                </TouchableOpacity>
+              ) : null}
+              {comment.isOffer ? (
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    { backgroundColor: "red", marginLeft: 80 },
+                  ]}
+                  onPress={() => {
+                    handleDelete(comment.id);
+                  }}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -199,7 +212,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#0782f9",
     width: 115,
     marginTop: 10,
-    marginLeft: 25,
     padding: 8,
     borderRadius: 10,
     alignItems: "center",

@@ -8,7 +8,7 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { signOut } from "firebase/auth";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
