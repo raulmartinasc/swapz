@@ -67,7 +67,7 @@ const Comments = (itemDetails) => {
       <ScrollView style={{ marginTop: 70 }}>
         <TextInput
           style={styles.textInput}
-          placeholder="Add new comment"
+          placeholder="Add new comment/offer"
           value={commentText}
           onChangeText={(commentText) => setCommentText(commentText)}
         />
@@ -77,16 +77,18 @@ const Comments = (itemDetails) => {
               submitComment(false);
             }}
             style={{
-              backgroundColor: "#0782f9",
+              backgroundColor: "white",
               width: 145,
               margin: 10,
-              padding: 8,
+              borderWidth: 2,
+              borderColor: "#0782f9",
+              padding: 6,
               borderRadius: 10,
               alignItems: "center",
               alignSelf: "center",
             }}
           >
-            <Text style={{ color: "white" }}>Submit Comment</Text>
+            <Text style={{ color: "#0782f9" }}>Submit Comment</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -95,6 +97,7 @@ const Comments = (itemDetails) => {
             style={{
               backgroundColor: "#0782f9",
               width: 145,
+
               margin: 10,
               padding: 8,
               borderRadius: 10,
