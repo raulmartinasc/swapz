@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
       getDoc(docRef).then((res) => {
         setUserInfo(res.data());
       });
-      console.log(`Logged in with ${user._tokenResponse.email}`);
+      // console.log(`Logged in with ${user._tokenResponse.email}`);
       setLoggedIn(true);
     });
   };

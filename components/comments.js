@@ -32,7 +32,7 @@ const Comments = (itemDetails) => {
   const [shouldShow, setShouldShow] = useState(false);
   const navigation = useNavigation();
 
-  console.log(itemDetails.route.params);
+  // console.log(itemDetails.route.params);
 
   const handleDelete = (id) => {
     deleteDoc(doc(db, `comments`, id)).then((res) => {});
@@ -55,10 +55,10 @@ const Comments = (itemDetails) => {
       };
       addDoc(collection(db, `comments`), newCommentData)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
       setCommentText("");
     };
@@ -97,7 +97,6 @@ const Comments = (itemDetails) => {
             style={{
               backgroundColor: "#0782f9",
               width: 145,
-
               margin: 10,
               padding: 8,
               borderRadius: 10,
@@ -143,7 +142,7 @@ const Comments = (itemDetails) => {
     });
   }, []);
   const handleNavigateToUser = (comment) => {
-    console.log(comment.User);
+    // console.log(comment.User);
     navigation.navigate("OtherUser", { user: comment.User });
   };
   let key = 0;
@@ -156,9 +155,18 @@ const Comments = (itemDetails) => {
         return (
           <View key={key} style={styles.commentBox}>
             <View style={styles.commentDetails}>
-              <Text>User: {comment.User}</Text>
-              <Text>Posted at: {comment.Posted.toDate().toDateString()}</Text>
-              <Text>Comment: {comment.Comment}</Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>User: </Text>{" "}
+                {comment.User}
+              </Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Posted at: </Text>{" "}
+                {comment.Posted.toDate().toDateString()}
+              </Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Comment: </Text>{" "}
+                {comment.Comment}
+              </Text>
             </View>
             <View style={styles.commentActions}>
               {comment.matches ? (
@@ -230,10 +238,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   commentBox: {
-    borderWidth: 2,
     borderRadius: 10,
     padding: 12,
     marginVertical: 5,
+    borderRadius: 5,
+    overflow: "hidden",
+    backgroundColor: "#f8f8f8",
+    elevation: 9,
   },
   commentDetails: {
     flex: 1,

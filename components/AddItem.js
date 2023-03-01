@@ -40,7 +40,7 @@ const AddItem = ({ navigation }) => {
 
     // Get the download URL of the uploaded image
     const url = await getDownloadURL(imageRef);
-    console.log(url, "image url in upload image func");
+    // console.log(url, "image url in upload image func");
     setImageURL(url);
   };
 
@@ -64,7 +64,7 @@ const AddItem = ({ navigation }) => {
         setItemTags("");
       })
       .catch((err) => {
-        console.log(err, "catch block addDoc in addItem.js");
+        // console.log(err, "catch block addDoc in addItem.js");
       });
 
     setImage(null);

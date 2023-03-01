@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 10,
   },
+  bold: { fontWeight: "bold" },
   row: {
     flexDirection: "row",
     alignItems: "center",

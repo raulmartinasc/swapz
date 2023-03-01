@@ -32,7 +32,7 @@ const Registration = ({ navigation }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential;
-        console.log(`registered with with ${user._tokenResponse.email}`);
+        // console.log(`registered with with ${user._tokenResponse.email}`);
         setDoc(doc(db, "users", email), {
           username: username,
           firstName: firstName,
@@ -56,11 +56,11 @@ const Registration = ({ navigation }) => {
             navigation.replace("Home");
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
           });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
