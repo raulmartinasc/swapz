@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     marginTop: 26,
-    margin: 10,
+    backgroundColor: "#f8f8f8",
+    margin: 3,
     padding: 20,
     borderRadius: 5,
     elevation: 10,
