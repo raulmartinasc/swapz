@@ -37,9 +37,11 @@ export default function ImageSelector({ image, setImage }) {
         title="Pick an image from camera roll"
         onPress={handleSelectImages}
       >
-        <FontAwesome name="camera" size={18} color="white">
-          {"  Pick an image"}
-        </FontAwesome>
+        <Text style={styles.buttonText}>
+          <FontAwesome name="camera" size={18} color="white"></FontAwesome>
+          {"  "}
+          Image select
+        </Text>
       </TouchableOpacity>
 
       {image && (
@@ -70,15 +72,19 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    width: 200,
+    width: 150,
     marginTop: 15,
     backgroundColor: "#0782F9",
-    width: "50%",
     padding: 10,
-    borderRadius: 7,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 16,
   },
 });
 

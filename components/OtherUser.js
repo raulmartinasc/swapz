@@ -26,6 +26,7 @@ const OtherUser = ({ route }) => {
       });
     });
   }, []);
+
   useEffect(() => {
     const itemQ = query(collection(db, "items"), where("username", "==", user));
     getDocs(itemQ).then((res) => {
