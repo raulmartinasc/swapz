@@ -8,22 +8,70 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { signOut } from "firebase/auth";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import Comments from "./comments";
 import { db } from "../firebaseConfig";
+import { UserContext } from "../Context/UserContext";
 
 const SingleItem = (item) => {
+  const [documentId, setDocumentId] = useState("");
   const itemDetails = item.route.params.item;
   const navigation = useNavigation();
+  const [isOwnPost, setIsOwnPost] = useState(false);
+  const { userInfo } = useContext(UserContext);
+
+  useEffect(() => {
+    const getDocumentId = async () => {
+      const q = query(
+        collection(db, "items"),
+        where("itemName", "==", `${itemDetails.itemName}`)
+      );
+      const querySnapshot = await getDocs(q);
+      const documentId = querySnapshot.docs[0].id;
+      return documentId;
+    };
+    getDocumentId().then((docId) => {
+      setDocumentId(docId);
+    });
+  }, []);
+
+  const handleDelete = () => {
+    console.log(documentId);
+    deleteDoc(doc(db, `items`, documentId))
+      .then(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
+        console.log("item deleted");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleNavigateToUser = () => {
     navigation.navigate("OtherUser", { user: itemDetails.username });
   };
+
+  useEffect(() => {
+    if (userInfo.username === itemDetails.username) {
+      console.log("own post");
+      setIsOwnPost(true);
+    }
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -34,10 +82,23 @@ const SingleItem = (item) => {
         />
         <View style={styles.row}>
           <Text style={styles.bold}>Posted by: </Text>
-          <TouchableOpacity onPress={handleNavigateToUser}>
-            <Text>{itemDetails.username}</Text>
-          </TouchableOpacity>
+          <Text>{itemDetails.username}</Text>
         </View>
+        {isOwnPost ? (
+          <TouchableOpacity
+            onPress={handleDelete}
+            style={[styles.button, { alignSelf: "left" }]}
+          >
+            <Text style={styles.buttonText}>Delete Item</Text>
+          </TouchableOpacity>
+        ) : null}
+        <TouchableOpacity
+          onPress={handleNavigateToUser}
+          style={[styles.button, { alignSelf: "left" }]}
+        >
+          <Text style={styles.buttonText}>View Profile</Text>
+        </TouchableOpacity>
+
         <View style={styles.row}>
           <Text style={styles.bold}>Location: </Text>
           <Text>{itemDetails.itemLocation}</Text>
@@ -47,8 +108,8 @@ const SingleItem = (item) => {
           <Text>{itemDetails.itemTags}</Text>
         </View>
         <Text style={styles.description}>{itemDetails.itemDescription}</Text>
-        {Comments(item)}
       </View>
+      {Comments(item)}
     </ScrollView>
   );
 };
@@ -85,5 +146,18 @@ const styles = StyleSheet.create({
   },
   description: {
     margin: -40,
+  },
+  button: {
+    backgroundColor: "#0782f9",
+    width: 115,
+    marginTop: 10,
+    padding: 8,
+    borderRadius: 10,
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 15,
   },
 });
