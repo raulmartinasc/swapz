@@ -76,26 +76,17 @@ const SingleItem = (item) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.detailsContainer}>
-        <Image
-          source={{uri: itemDetails.itemImg}}
-          style={[styles.image, {alignSelf: "center"}]}
-        />
+        <Image source={{ uri: itemDetails.itemImg }} style={styles.image} />
         <View style={styles.row}>
           <Text style={styles.bold}>Posted by: </Text>
           <Text>{itemDetails.username}</Text>
         </View>
         {isOwnPost ? (
-          <TouchableOpacity
-            onPress={handleDelete}
-            style={[styles.button, {alignSelf: "left"}]}
-          >
+          <TouchableOpacity onPress={handleDelete} style={styles.button}>
             <Text style={styles.buttonText}>Delete Item</Text>
           </TouchableOpacity>
         ) : null}
-        <TouchableOpacity
-          onPress={handleNavigateToUser}
-          style={[styles.button, {alignSelf: "left"}]}
-        >
+        <TouchableOpacity onPress={handleNavigateToUser} style={styles.button}>
           <Text style={styles.buttonText}>View Profile</Text>
         </TouchableOpacity>
 
@@ -133,14 +124,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 5,
     borderColor: "#ddd",
+    alignSelf: "center",
   },
   detailsContainer: {
     marginTop: 26,
-    backgroundColor: "#f8f8f8",
     margin: 3,
     padding: 20,
     borderRadius: 5,
-    elevation: 10,
   },
   bold: {fontWeight: "bold"},
   row: {
@@ -158,7 +148,6 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 10,
     alignItems: "center",
-    alignSelf: "center",
   },
   buttonText: {
     color: "white",
