@@ -22,12 +22,10 @@ Link: https://www.youtube.com/watch?v=9dD8mxC-31c&ab_channel=VincenzoChiovaro
 # Technology
 
 - Swapz uses React Native and Expo Go as its frontend technologies. React Native is a popular framework for building mobile applications using JavaScript and allows for cross-platform development. Expo Go is a mobile app that enables developers to test and share their React Native applications in real-time on a mobile device.
-
-It also provides a range of built-in features and components to speed up the development process. Swapz leverages the benefits of these technologies to provide an easy-to-use and accessible platform for users of all ages and backgrounds.
+  It also provides a range of built-in features and components to speed up the development process. Swapz leverages the benefits of these technologies to provide an easy-to-use and accessible platform for users of all ages and backgrounds.
 
 - For the backend Swapz uses Firebase as a Backend-as-a-Service (BaaS) platform. Firebase handles all of the data storage, image hosting, and API for the data. Firestore was used to store all the items, comments, and user data. The data was structured in Firestore's collections to limit the amount of reads our app was requesting from the database.
-
-Firebase also provided simple user authentication, allowing users to sign up using their email and password. With this auth token, Swapz assigned rules to storage to only allow registered users to write to the database.
+  Firebase also provided simple user authentication, allowing users to sign up using their email and password. With this auth token, Swapz assigned rules to storage to only allow registered users to write to the database.
 
 # Challenges
 
