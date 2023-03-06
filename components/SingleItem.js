@@ -8,10 +8,10 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import React, {useState, useEffect, useContext} from "react";
-import {signOut} from "firebase/auth";
-import {NavigationContainer, useNavigation} from "@react-navigation/native";
-import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import React, { useState, useEffect, useContext } from "react";
+import { signOut } from "firebase/auth";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   collection,
   query,
@@ -22,15 +22,15 @@ import {
 } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import Comments from "./comments";
-import {db} from "../firebaseConfig";
-import {UserContext} from "../Context/UserContext";
+import { db } from "../firebaseConfig";
+import { UserContext } from "../Context/UserContext";
 
 const SingleItem = (item) => {
   const [documentId, setDocumentId] = useState("");
   const itemDetails = item.route.params.item;
   const navigation = useNavigation();
   const [isOwnPost, setIsOwnPost] = useState(false);
-  const {userInfo} = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
     const getDocumentId = async () => {
@@ -53,7 +53,7 @@ const SingleItem = (item) => {
       .then(() => {
         navigation.reset({
           index: 0,
-          routes: [{name: "Home"}],
+          routes: [{ name: "Home" }],
         });
         console.log("item deleted");
       })
@@ -63,7 +63,7 @@ const SingleItem = (item) => {
   };
 
   const handleNavigateToUser = () => {
-    navigation.navigate("OtherUser", {user: itemDetails.username});
+    navigation.navigate("OtherUser", { user: itemDetails.username });
   };
 
   useEffect(() => {
@@ -96,13 +96,13 @@ const SingleItem = (item) => {
         </View>
         <View style={styles.row}>
           <Text style={styles.bold}>Description: </Text>
-          <Text>{itemDetails.itemDesc}</Text>
+          <Text style={{ fontSize: 13 }}>{itemDetails.itemDesc}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.bold}>Tags: </Text>
           <Text>{itemDetails.itemTags}</Text>
         </View>
-        <Text style={styles.description}>{itemDetails.itemDescription}</Text>
+        <Text style={styles.description}></Text>
       </View>
       {Comments(item)}
     </ScrollView>
@@ -132,11 +132,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 5,
   },
-  bold: {fontWeight: "bold"},
+  bold: { fontWeight: "bold" },
   row: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 8,
   },
   description: {
     margin: -40,

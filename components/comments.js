@@ -242,13 +242,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   commentBox: {
+    alignSelf: "center",
+    width: "90%",
     borderRadius: 10,
     padding: 12,
     marginVertical: 5,
     borderRadius: 5,
     overflow: "hidden",
     backgroundColor: "#f8f8f8",
-    elevation: 9,
+    elevation: 10,
   },
   commentDetails: {
     flex: 1,
